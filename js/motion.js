@@ -1,5 +1,6 @@
 import { ball, paddle, bricks } from "./objects.js";
 import { keys } from "./input.js";
+import { bricksCollision } from "./collision.js";
 
 // Move ball with wall and paddle bounce  
 export function moveBall(canvas) {
@@ -60,5 +61,7 @@ export function gameLoop(canvas, ctx, drawCanvas) {
   moveBall(canvas);
   drawCanvas(ctx, canvas, paddle, ball, bricks);
   requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
+  
+  bricksCollision();
 }
   

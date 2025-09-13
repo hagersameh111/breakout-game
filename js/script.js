@@ -1,6 +1,7 @@
 import { ball, paddle, bricks } from "./objects.js";
 import { gameLoop } from "./motion.js";
 
+
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
@@ -25,15 +26,18 @@ export function drawPaddle(ctx, paddle) {
 
 // --- Draw Bricks ---
 export function drawBricks(ctx, bricks) {
-  bricks.forEach((brick) => {
-    if (!brick.destroyed) {
-      ctx.fillStyle = brick.color;
-      ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
+  bricks.forEach(({ x, y, width, height, color, destroyed }) => {
+    if (!destroyed) {
+      ctx.beginPath();
+      ctx.rect(x, y, width, height);
+      ctx.fillStyle = color;
+      ctx.fill();
+      ctx.closePath();
     }
   });
 }
 
-// --- Draw Canvas (wrapper) ---
+// --- Draw Canvas ---
 export function drawCanvas(ctx, canvas) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
