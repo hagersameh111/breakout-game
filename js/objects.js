@@ -5,7 +5,8 @@ export const ball = {
   dx: 7,
   dy: 7,
   color: "red",
-  speed: 5
+  speed: 5,
+  onPaddle: true
 };
 
 export const paddle = {
