@@ -5,7 +5,7 @@ export const ball = {
   dx: 7,
   dy: 7,
   color: "red",
-  speed: 7
+  speed: 5
 };
 
 export const paddle = {
@@ -34,9 +34,11 @@ class Brick {
   get bottom() { return this.y + this.height; }
 }
 
+// --- Shared bricks array ---
+export const bricks = [];
+
 // --- Generate themed bricks ---
 export function createBricks(ctx) {
-  const bricks = [];
   const brickWidth = 60;
   const brickHeight = 25;
   const padding = 5;
@@ -45,6 +47,8 @@ export function createBricks(ctx) {
   const themes = ["pyramid", "wall", "diamond"];
   const theme = themes[Math.floor(Math.random() * themes.length)];
 
+  let generatedBricks = [];
+
   if (theme === "pyramid") {
     let rows = 6;
     let y = offsetTop;
@@ -52,7 +56,7 @@ export function createBricks(ctx) {
       let rowBricks = r + 1;
       let x = ctx.canvas.width / 2 - (rowBricks * (brickWidth + padding)) / 2;
       for (let c = 0; c < rowBricks; c++) {
-        bricks.push(new Brick(x, y, brickWidth, brickHeight, `hsl(${r*40},70%,50%)`));
+        generatedBricks.push(new Brick(x, y, brickWidth, brickHeight, `hsl(${r*40},70%,50%)`));
         x += brickWidth + padding;
       }
       y += brickHeight + padding;
@@ -66,7 +70,7 @@ export function createBricks(ctx) {
       let x = 20;
       for (let c = 0; c < cols; c++) {
         let color = r % 2 === 0 ? "red" : "blue";
-        bricks.push(new Brick(x, y, brickWidth, brickHeight, color));
+        generatedBricks.push(new Brick(x, y, brickWidth, brickHeight, color));
         x += brickWidth + padding;
       }
       y += brickHeight + padding;
@@ -80,18 +84,19 @@ export function createBricks(ctx) {
       let count = r <= mid ? r + 1 : rows - r;
       let x = ctx.canvas.width / 2 - (count * (brickWidth + padding)) / 2;
       for (let c = 0; c < count; c++) {
-        bricks.push(new Brick(x, y, brickWidth, brickHeight, `hsl(${c*50},70%,50%)`));
+        generatedBricks.push(new Brick(x, y, brickWidth, brickHeight, `hsl(${c*50},70%,50%)`));
         x += brickWidth + padding;
       }
       y += brickHeight + padding;
     }
   }
 
+  // Clear old bricks and push new ones to shared array
+  bricks.length = 0;
+  bricks.push(...generatedBricks);
+
   return bricks;
 }
-
-// --- Export bricks later after canvas exists ---
-export let bricks; 
 
 export let score = 0;
 export let lives = 3;

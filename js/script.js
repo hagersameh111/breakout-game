@@ -1,6 +1,5 @@
-import { ball, paddle, createBricks, bricks as bricksExport } from "./objects.js";
+import { ball, paddle, bricks, createBricks } from "./objects.js";
 import { gameLoop } from "./motion.js";
-
 
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
@@ -8,8 +7,8 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth * 0.7;
 canvas.height = window.innerHeight * 0.9;
 
-// generate bricks now that canvas exists
-export const bricks = createBricks(ctx);
+// Populate the shared bricks array
+createBricks(ctx);
 
 // --- Draw Ball ---
 export function drawBall(ctx, ball) {
@@ -26,14 +25,11 @@ export function drawPaddle(ctx, paddle) {
   ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
 }
 
-// --- Draw Bricks with gradient ---
+// --- Draw Bricks ---
 export function drawBricks(ctx, bricks) {
   bricks.forEach((brick) => {
     if (!brick.destroyed) {
-      const gradient = ctx.createLinearGradient(
-        brick.x, brick.y,
-        brick.x, brick.y + brick.height
-      );
+      const gradient = ctx.createLinearGradient(brick.x, brick.y, brick.x, brick.y + brick.height);
       gradient.addColorStop(0, "white");
       gradient.addColorStop(0.3, brick.color);
       gradient.addColorStop(1, "black");
@@ -50,18 +46,11 @@ export function drawBricks(ctx, bricks) {
       ctx.lineWidth = 2;
       ctx.strokeStyle = "black";
       ctx.strokeRect(brick.x, brick.y, brick.width, brick.height);
-  bricks.forEach(({ x, y, width, height, color, destroyed }) => {
-    if (!destroyed) {
-      ctx.beginPath();
-      ctx.rect(x, y, width, height);
-      ctx.fillStyle = color;
-      ctx.fill();
-      ctx.closePath();
     }
   });
 }
 
-// --- Draw Canvas ---
+// --- Draw the canvas ---
 export function drawCanvas(ctx, canvas) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBall(ctx, ball);
