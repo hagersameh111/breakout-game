@@ -1,21 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Breakout - Dynamic</title>
   <link rel="stylesheet" href="./css/style.css">
 </head>
+
 <body>
 
   <canvas id="myCanvas"></canvas>
 
-  
-  
-    <script type="module" src="./js/objects.js"></script>
-      <script type="module" src="./js/input.js"></script>
-    <script type="module" src="./js/motion.js"></script>
-<script type="module" src="./js/script.js"></script>
+
+
+  <script type="module" src="./js/objects.js"></script>
+  <script type="module" src="./js/input.js"></script>
+  <script type="module" src="./js/motion.js"></script>
+  <script type="module" src="./js/script.js"></script>
+
+  <div class="hud">
+    <div class="left">
+      <div>Score: <span id="score">0</span></div>
+      <div>Lives: <span id="lives">3</span></div>
+      <div>Top Score: <span id="topScore">0</span></div>
+    </div>
+  </div>
 
 </body>
+
 </html>

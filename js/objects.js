@@ -2,9 +2,10 @@ export const ball = {
   x: 400,
   y: 300,
   radius: 10,
-  dx: 3,
-  dy: 3,
-  color: "red"
+  dx: 7,
+  dy: 7,
+  color: "red",
+  speed: 7
 };
 
 export const paddle = {
