@@ -1,0 +1,24 @@
+/* installed game font to use later , ------DO NOT DELETE ----- */
+@font-face {
+  font-family: "SuperPixel-m2L8j";
+  src: url("../font/SuperPixel-m2L8j.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+body {
+    margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;     
+      height: 100vh;           
+      background: #222;
+      font-family: "SuperPixel-m2L8j", sans-serif;
+      color: aliceblue;
+}
+
+canvas {
+ border: 2px solid #0095DD;
+      background: #f4f4f4;
+      display: block;
+
+}
