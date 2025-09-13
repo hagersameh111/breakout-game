@@ -1,5 +1,3 @@
-
-
 export const ball = {
   x: 400,
   y: 300,
@@ -13,34 +11,10 @@ export const paddle = {
   width: 110,
   height: 14,
   x: 345,
-  y: 550, 
+  y: 550,
   speed: 7,
   color: "blue"
 };
-
-//  brickslayout, hena mafrod 3la hasb l levels bs da bs demo 8ayro brahtko
-// export const bricks = [];
-// const rows = 5;
-// const cols = 8;
-// const brickWidth = 80;
-// const brickHeight = 20;
-// const padding = 10;
-// const offsetTop = 50;
-// const offsetLeft = 35;
-
-// for (let r = 0; r < rows; r++) {
-//   for (let c = 0; c < cols; c++) {
-//     bricks.push({
-//       x: c * (brickWidth + padding) + offsetLeft,
-//       y: r * (brickHeight + padding) + offsetTop,
-//       width: brickWidth,
-//       height: brickHeight,
-//       color: "blue",
-//       destroyed: false
-//     });
-//   }
-// }
-
 
 // --- Brick class ---
 class Brick {
@@ -59,38 +33,64 @@ class Brick {
   get bottom() { return this.y + this.height; }
 }
 
-// --- Brick grid ---
-class BrickGrid {
-  constructor() {
-    // keep constants here
-    this.rows = 5;
-    this.cols = 8;
-    this.brickWidth = 80;
-    this.brickHeight = 20;
-    this.padding = 10;
-    this.offsetTop = 50;
-    this.offsetLeft = 35;
-    this.bricks = [];
+// --- Generate themed bricks ---
+export function createBricks(ctx) {
+  const bricks = [];
+  const brickWidth = 60;
+  const brickHeight = 25;
+  const padding = 5;
+  const offsetTop = 50;
 
-    this.createBricks();
-  }
+  const themes = ["pyramid", "wall", "diamond"];
+  const theme = themes[Math.floor(Math.random() * themes.length)];
 
-  createBricks() {
-    for (let r = 0; r < this.rows; r++) {
-      for (let c = 0; c < this.cols; c++) {
-        let x = c * (this.brickWidth + this.padding) + this.offsetLeft;
-        let y = r * (this.brickHeight + this.padding) + this.offsetTop;
-        this.bricks.push(new Brick(x, y, this.brickWidth, this.brickHeight));
+  if (theme === "pyramid") {
+    let rows = 6;
+    let y = offsetTop;
+    for (let r = 0; r < rows; r++) {
+      let rowBricks = r + 1;
+      let x = ctx.canvas.width / 2 - (rowBricks * (brickWidth + padding)) / 2;
+      for (let c = 0; c < rowBricks; c++) {
+        bricks.push(new Brick(x, y, brickWidth, brickHeight, `hsl(${r*40},70%,50%)`));
+        x += brickWidth + padding;
       }
+      y += brickHeight + padding;
     }
   }
+  else if (theme === "wall") {
+    let rows = 5;
+    let cols = Math.floor(ctx.canvas.width / (brickWidth + padding));
+    let y = offsetTop;
+    for (let r = 0; r < rows; r++) {
+      let x = 20;
+      for (let c = 0; c < cols; c++) {
+        let color = r % 2 === 0 ? "red" : "blue";
+        bricks.push(new Brick(x, y, brickWidth, brickHeight, color));
+        x += brickWidth + padding;
+      }
+      y += brickHeight + padding;
+    }
+  }
+  else if (theme === "diamond") {
+    let rows = 7;
+    let y = offsetTop;
+    let mid = Math.floor(rows / 2);
+    for (let r = 0; r < rows; r++) {
+      let count = r <= mid ? r + 1 : rows - r;
+      let x = ctx.canvas.width / 2 - (count * (brickWidth + padding)) / 2;
+      for (let c = 0; c < count; c++) {
+        bricks.push(new Brick(x, y, brickWidth, brickHeight, `hsl(${c*50},70%,50%)`));
+        x += brickWidth + padding;
+      }
+      y += brickHeight + padding;
+    }
+  }
+
+  return bricks;
 }
 
-// export bricks list directly
-const brickGrid = new BrickGrid();
-export const bricks = brickGrid.bricks;
-
-
+// --- Export bricks later after canvas exists ---
+export let bricks; 
 
 export let score = 0;
 export let lives = 3;
