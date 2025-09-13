@@ -41,11 +41,19 @@ function updateState() {
     
 
     if (state.score > state.topScore) {
-    state.topScore = state.score;
-    saveTopScore();
-    topScoreEl.textContent = state.topScore;
+        state.topScore = state.score;
+        saveTopScore();
+        topScoreEl.textContent = state.topScore;
+    }
 }
-``
+function loseLife() {
+    state.lives-=1;
+    updateState();
+
+    if(state.lives <= 0) {
+        alert("Game Over");
+        resetState();
+    }
 }
 
-export { config, state, updateState, loadTopScore, saveTopScore }
+export { config, state, updateState, loadTopScore, saveTopScore, loseLife }
