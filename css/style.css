@@ -1,10 +1,10 @@
 /* installed game font to use later , ------DO NOT DELETE ----- */
-@font-face {
+/* @font-face {
   font-family: "SuperPixel-m2L8j";
   src: url("../font/SuperPixel-m2L8j.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
-}
+} */
 body {
     margin: 0;
       display: flex;

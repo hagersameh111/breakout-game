@@ -6,8 +6,8 @@ const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
 // Use actual viewport size
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+canvas.width = window.innerWidth*.7;
+canvas.height = window.innerHeight*.6;
 
 // --- Draw Ball ---
 export function drawBall(ctx, ball) {
