@@ -56,4 +56,8 @@ function loseLife() {
     }
 }
 
-export { config, state, updateState, loadTopScore, saveTopScore, loseLife }
+function winGame() {
+    alert("🎉 You Won!");
+    resetState();
+}
+export { config, state, updateState, loadTopScore, saveTopScore, loseLife , winGame}
