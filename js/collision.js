@@ -1,12 +1,12 @@
 import { ball, paddle, bricks } from './objects.js';
-import { config, state, updateState } from './state.js'
+import { config, state, updateState , winGame} from './state.js'
 import { loseLife } from './state.js';
 
 export function bricksCollision() {
     // console.log(ball.x);
     // console.log(ball.y);
     // console.log(bricks.y);
-
+    let brickHit = false;
     bricks.forEach((brick) => {
         if (!brick.destroyed) {
             if (ball.x + ball.radius > brick.left && ball.x - ball.radius < brick.right && ball.y + ball.radius > brick.top && ball.y - ball.radius < brick.bottom) {
@@ -14,10 +14,19 @@ export function bricksCollision() {
                 ball.dy *= -1;
                 state.score += config.pointsPerBrick;
                 updateState();
+                brickHit = true; 
+
             }
         }
     })
+      if (brickHit) {
+        const allDestroyed = bricks.every(b => b.destroyed);
+        if (allDestroyed) {
+            setTimeout(() => winGame(), 50); 
+        }
+    }
 }
+
 
 export function wallCollision(canvas){
   // Bounce off left and right walls
