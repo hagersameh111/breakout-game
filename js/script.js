@@ -1,5 +1,6 @@
 import { ball, paddle, bricks, createBricks } from "./objects.js";
 import { gameLoop } from "./motion.js";
+import { drawLives } from "./state.js";
 
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
@@ -56,6 +57,7 @@ export function drawCanvas(ctx, canvas) {
   drawBall(ctx, ball);
   drawPaddle(ctx, paddle);
   drawBricks(ctx, bricks);
+  drawLives(ctx, canvas)
 }
 
 // --- Start game loop ---
