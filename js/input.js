@@ -5,6 +5,12 @@ export const keys = {
   space: false
 };
 
+// Mouse input
+export const mouse = {
+  x: null,
+  inside: false
+};
+
 window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") keys.left = true;
   if (e.key === "ArrowRight") keys.right = true;
@@ -17,3 +23,15 @@ window.addEventListener("keyup", (e) => {
   if (e.key === " " || e.key === "Spacebar") keys.space = false;
 });
 
+// --- Mouse Events (on canvas) ---
+const canvas = document.getElementById("myCanvas");
+
+canvas.addEventListener("mousemove", (e) => {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.inside = (mouse.x >= 0 && mouse.x <= canvas.width);
+});
+
+canvas.addEventListener("mouseleave", () => {
+  mouse.inside = false;
+});

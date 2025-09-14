@@ -1,5 +1,5 @@
 import { ball, paddle, bricks } from "./objects.js";
-import { keys } from "./input.js";
+import { keys, mouse } from "./input.js";
 import { loadTopScore } from "./state.js";
 import { wallCollision, groundCollision, paddleCollision, bricksCollision } from "./collision.js";
 
@@ -20,11 +20,28 @@ export function ballOnPaddle() {
   ball.y = paddle.y - ball.radius;
 }
 
+
 // Paddle movement based on input
 export function movePaddle(canvas) {
-  if (keys.left && paddle.x > 0) paddle.x -= paddle.speed;
-  if (keys.right && paddle.x + paddle.width < canvas.width) paddle.x += paddle.speed;
+  // --- Keyboard ---
+  if (keys.left && paddle.x > 0) {
+    paddle.x -= paddle.speed;
+  }
+  if (keys.right && paddle.x + paddle.width < canvas.width) {
+    paddle.x += paddle.speed;
+  }
+
+  // --- Mouse ---
+  if (mouse.inside && mouse.x !== null) {
+    let newX = mouse.x - paddle.width / 2;
+    if (newX < 0) newX = 0;
+    if (newX + paddle.width > canvas.width) newX = canvas.width - paddle.width;
+
+    paddle.x = newX;
+  }
 }
+
+
 
 // Launch ball on spacebar press
 export function launchBall() {
