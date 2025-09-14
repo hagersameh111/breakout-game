@@ -1,4 +1,4 @@
-
+import { createBricks } from "./objects.js"; 
 
 const topScoreEl = document.getElementById('topScore');
 const scoreEl = document.getElementById('score');
@@ -31,6 +31,7 @@ function resetState() {
     state.lives = config.startingLives;
     state.topScore = localStorage.getItem(config.localStorageKey) || 0;
     updateState();
+    createBricks(document.getElementById("myCanvas").getContext("2d"));
 }
 
 function updateState() {
