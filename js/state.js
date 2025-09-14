@@ -17,6 +17,22 @@ const state = {
 
 }
 
+// Draw remaining lives as hearts
+export function drawLives(ctx, canvas) {
+  ctx.font = "25px Arial";       
+  ctx.fillStyle = "red";      
+  ctx.textAlign = "right";
+  ctx.textBaseline = "top";
+
+// Draw hearts for lives
+  let hearts = "";
+  for (let i = 0; i < state.lives; i++) {
+    hearts += "❤️";
+  }
+
+  ctx.fillText(hearts, canvas.width - 10, 10);
+}
+
 function saveTopScore() {
     localStorage.setItem(config.localStorageKey, state.topScore);
 
@@ -38,7 +54,6 @@ function updateState() {
     livesEl.textContent = state.lives;
     // topScoreEl.textContent = localStorage.getItem(config.localStorageKey);
 
-    
 
     if (state.score > state.topScore) {
         state.topScore = state.score;
