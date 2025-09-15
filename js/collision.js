@@ -1,6 +1,7 @@
 import { ball, paddle, bricks } from './objects.js';
 import { config, state, updateState , winGame} from './state.js'
 import { loseLife } from './state.js';
+import { sounds, playSound } from "./sound.js";
 
 export function bricksCollision() {
     // console.log(ball.x);
@@ -15,7 +16,7 @@ export function bricksCollision() {
                 state.score += config.pointsPerBrick;
                 updateState();
                 brickHit = true; 
-
+                playSound(sounds.brickHit);
             }
         }
     })
@@ -32,10 +33,12 @@ export function wallCollision(canvas){
   // Bounce off left and right walls
   if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
     ball.dx *= -1;
+    playSound(sounds.brickHit);
   }
   // Bounce off top wall
   if (ball.y - ball.radius < 0) {
     ball.dy *= -1;
+    playSound(sounds.brickHit);
   }
 }
 
@@ -77,6 +80,7 @@ export function paddleCollision(){
     // Update dx, dy using trig
     ball.dx = speed * Math.sin(angle);
     ball.dy = -speed * Math.cos(angle);
+    playSound(sounds.paddleHit);
   }
 
 }

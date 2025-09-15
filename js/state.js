@@ -1,4 +1,5 @@
 import { createBricks } from "./objects.js"; 
+import { sounds, playSound } from "./sound.js";
 
 const topScoreEl = document.getElementById('topScore');
 const scoreEl = document.getElementById('score');
@@ -65,8 +66,10 @@ function updateState() {
 function loseLife() {
     state.lives-=1;
     updateState();
+    playSound(sounds.loseLife);
 
     if(state.lives <= 0) {
+        playSound(sounds.gameOver);
         alert("Game Over");
         resetState();
     }

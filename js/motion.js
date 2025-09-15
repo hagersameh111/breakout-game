@@ -2,6 +2,7 @@ import { ball, paddle, bricks } from "./objects.js";
 import { keys, mouse } from "./input.js";
 import { loadTopScore } from "./state.js";
 import { wallCollision, groundCollision, paddleCollision, bricksCollision } from "./collision.js";
+import { sounds, playSound } from "./sound.js";
 
 
 // Move ball with wall and paddle bounce  
@@ -70,4 +71,5 @@ export function gameLoop(canvas, ctx, drawCanvas) {
   requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
 
   loadTopScore();
+  sounds.bgMusic.play();
 }
