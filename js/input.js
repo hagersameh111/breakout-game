@@ -35,3 +35,16 @@ canvas.addEventListener("mousemove", (e) => {
 canvas.addEventListener("mouseleave", () => {
   mouse.inside = false;
 });
+
+// --- Mouse Click (treat left click as Spacebar) ---
+canvas.addEventListener("mousedown", (e) => {
+  if (e.button === 0) { // 0 = left button
+    keys.space = true;
+  }
+});
+
+canvas.addEventListener("mouseup", (e) => {
+  if (e.button === 0) {
+    keys.space = false;
+  }
+});
