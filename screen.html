@@ -35,5 +35,57 @@
   </style>
 </head>
 
+<body>
+  <div>
+    <h1>Breakout Game 🎮</h1>
+
+    <!-- Start Menu Overlay -->
+    <div id="welcomeScreen" class="overlay">
+
+      <p><strong>How to Play:</strong></p>
+      <ul>
+        <li>⬅️ ➡️ : Move Paddle</li><br>
+        <li>␣ (Space): Launch Ball</li><br>
+        <li>🖱️ Move Mouse: Control Paddle</li><br>
+        <li>🖱️ Click: Launch Ball</li><br>
+        <li>🏆 Score Points by Hitting Bricks</li>
+      </ul>
+
+      <!-- enter your name-->
+      <label for="playerName">Enter Your Name:</label><br>
+      <input type="text" id="playerName" placeholder="Your name..." />
+
+      <br><br>
+
+      <!-- select your level-->
+      <label for="levelSelect">Choose Level:</label><br>
+      <select id="levelSelect">
+        <option value="1">HARD</option>
+        <option value="2">MID</option>
+        <option value="3">EASY</option>
+      </select>
+
+      <br><br>
+
+      <!-- Start button -->
+      <button id="startBtn" class="btn">Start Game</button>
+    </div>
+  </div>
+
+  <!--When the user clicks the "Start Game" button-->
+  <script>
+    document.getElementById('startBtn').addEventListener('click', () => {
+      const playerName = document.getElementById('playerName').value;
+      const level = document.getElementById('levelSelect').value;
+
+      //save name and level in local storage to use in game page
+      localStorage.setItem('playerName', playerName);
+      localStorage.setItem('selectedLevel', level);
+
+      // Redirect to the game page
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
 
 </html>
