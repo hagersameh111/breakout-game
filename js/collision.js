@@ -2,30 +2,76 @@ import { ball, paddle, bricks } from './objects.js';
 import { config, state, updateState , winGame} from './state.js'
 import { loseLife } from './state.js';
 
-export function bricksCollision() {
-    // console.log(ball.x);
-    // console.log(ball.y);
-    // console.log(bricks.y);
-    let brickHit = false;
-    bricks.forEach((brick) => {
-        if (!brick.destroyed) {
-            if (ball.x + ball.radius > brick.left && ball.x - ball.radius < brick.right && ball.y + ball.radius > brick.top && ball.y - ball.radius < brick.bottom) {
-                brick.destroyed = true;
-                ball.dy *= -1;
-                state.score += config.pointsPerBrick;
-                updateState();
-                brickHit = true; 
+// export function bricksCollision() {
+//     // console.log(ball.x);
+//     // console.log(ball.y);
+//     // console.log(bricks.y);
+//     let brickHit = false;
+//     bricks.forEach((brick) => {
+//         if (!brick.destroyed) {
+//             if (ball.x + ball.radius > brick.left && ball.x - ball.radius < brick.right && ball.y + ball.radius > brick.top && ball.y - ball.radius < brick.bottom) {
+//                 brick.destroyed = true;
+//                 ball.dy *= -1;
+//                 state.score += config.pointsPerBrick;
+//                 updateState();
+//                 brickHit = true; 
 
-            }
+//             }
+//         }
+//     })
+//       if (brickHit) {
+//         const allDestroyed = bricks.every(b => b.destroyed);
+//         if (allDestroyed) {
+//             setTimeout(() => winGame(), 50); 
+//         }
+//     }
+// }
+export function bricksCollision() {
+  let brickHit = false;
+
+  bricks.forEach((brick) => {
+    if (!brick.destroyed) {
+      if (
+        ball.x + ball.radius > brick.left &&
+        ball.x - ball.radius < brick.right &&
+        ball.y + ball.radius > brick.top &&
+        ball.y - ball.radius < brick.bottom
+      ) {
+        // Decide bounce direction based on overlap
+        const overlapLeft = ball.x + ball.radius - brick.left;
+        const overlapRight = brick.right - (ball.x - ball.radius);
+        const overlapTop = ball.y + ball.radius - brick.top;
+        const overlapBottom = brick.bottom - (ball.y - ball.radius);
+
+        const minOverlap = Math.min(
+          overlapLeft,
+          overlapRight,
+          overlapTop,
+          overlapBottom
+        );
+
+        if (minOverlap === overlapLeft || minOverlap === overlapRight) {
+          ball.dx *= -1; // hit left or right
+        } else {
+          ball.dy *= -1; // hit top or bottom
         }
-    })
-      if (brickHit) {
-        const allDestroyed = bricks.every(b => b.destroyed);
-        if (allDestroyed) {
-            setTimeout(() => winGame(), 50); 
-        }
+
+        brick.destroyed = true;
+        state.score += config.pointsPerBrick;
+        updateState();
+        brickHit = true;
+      }
     }
+  });
+
+  if (brickHit) {
+    const allDestroyed = bricks.every((b) => b.destroyed);
+    if (allDestroyed) {
+      setTimeout(() => winGame(), 50);
+    }
+  }
 }
+
 
 
 export function wallCollision(canvas){
