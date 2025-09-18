@@ -31,26 +31,32 @@ export function drawPaddle(ctx, paddle) {
 export function drawBricks(ctx, bricks) {
   bricks.forEach((brick) => {
     if (!brick.destroyed) {
-      const gradient = ctx.createLinearGradient(brick.x, brick.y, brick.x, brick.y + brick.height);
-      gradient.addColorStop(0, "white");
-      gradient.addColorStop(0.3, brick.color);
-      gradient.addColorStop(1, "black");
+      if (brick.image && brick.image.complete) {
+        // draw pics on bricks
+        ctx.drawImage(brick.image, brick.x, brick.y, brick.width, brick.height);
 
-      ctx.shadowColor = "rgba(0,0,0,0.5)";
-      ctx.shadowBlur = 6;
-      ctx.shadowOffsetX = 3;
-      ctx.shadowOffsetY = 3;
+        // shadows
+        ctx.shadowColor = "rgba(125, 202, 233, 1)";
+        ctx.shadowBlur = 6;
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
 
-      ctx.fillStyle = gradient;
-      ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
+        // borders
+        ctx.lineWidth = .5;
+        ctx.strokeStyle = "black";
+        ctx.strokeRect(brick.x, brick.y, brick.width, brick.height);
 
-      ctx.shadowColor = "transparent";
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = "black";
-      ctx.strokeRect(brick.x, brick.y, brick.width, brick.height);
+        // stop shadows
+       
+      } else {
+        // if faild to load pics then it shows as grey bricks
+        ctx.fillStyle = brick.color || "gray";
+        ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
+      }
     }
   });
 }
+
 
 //paddle start position
 paddle.x = canvas.width / 2 - paddle.width / 2;
