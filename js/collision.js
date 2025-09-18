@@ -26,6 +26,7 @@ import { loseLife } from './state.js';
 //         }
 //     }
 // }
+
 export function bricksCollision() {
   let brickHit = false;
 
@@ -37,23 +38,23 @@ export function bricksCollision() {
         ball.y + ball.radius > brick.top &&
         ball.y - ball.radius < brick.bottom
       ) {
-        // Decide bounce direction based on overlap
+        // Compute overlap on each side
         const overlapLeft = ball.x + ball.radius - brick.left;
         const overlapRight = brick.right - (ball.x - ball.radius);
         const overlapTop = ball.y + ball.radius - brick.top;
         const overlapBottom = brick.bottom - (ball.y - ball.radius);
 
-        const minOverlap = Math.min(
-          overlapLeft,
-          overlapRight,
-          overlapTop,
-          overlapBottom
-        );
+        const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
 
-        if (minOverlap === overlapLeft || minOverlap === overlapRight) {
-          ball.dx *= -1; // hit left or right
-        } else {
-          ball.dy *= -1; // hit top or bottom
+        // Bounce based on smallest overlap
+        if (minOverlap === overlapLeft) {
+          ball.dx = -Math.abs(ball.dx); // hit left side
+        } else if (minOverlap === overlapRight) {
+          ball.dx = Math.abs(ball.dx); // hit right side
+        } else if (minOverlap === overlapTop) {
+          ball.dy = -Math.abs(ball.dy); // hit top side
+        } else if (minOverlap === overlapBottom) {
+          ball.dy = Math.abs(ball.dy); // hit bottom side
         }
 
         brick.destroyed = true;
