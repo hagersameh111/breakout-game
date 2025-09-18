@@ -1,24 +1,23 @@
-/* installed game font to use later , ------DO NOT DELETE ----- */
-/* @font-face {
-  font-family: "SuperPixel-m2L8j";
-  src: url("../font/SuperPixel-m2L8j.ttf") format("truetype");
-  font-weight: normal;
-  font-style: normal;
-} */
+/*font*/
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Jersey+10&display=swap');
 body {
     margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;     
       height: 100vh;           
-      background: #222;
-      font-family: "SuperPixel-m2L8j", sans-serif;
+    background-image: url(../assets/images/bg.jpg);
+      font-family: "Bitcount Grid Double", sans-serif;
       color: aliceblue;
+
 }
 
-canvas {
- border: 2px solid #0095DD;
-      background: #f4f4f4;
-      display: block;
 
+ canvas {
+  border: 2px solid #0095DD;
+  background-image: url("../assets/images/cb.jpg");
+  background-size: cover;      /* fits image inside canvas, no cropping */
+  background-position: center;
+  background-repeat: no-repeat;
+  display: block;
 }
