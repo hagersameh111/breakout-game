@@ -5,8 +5,9 @@ import { drawLives } from "./state.js";
 const canvas = document.getElementById("myCanvas");
 const ctx = canvas.getContext("2d");
 
-canvas.width = window.innerWidth * 0.7;
-canvas.height = window.innerHeight * 0.9;
+//canvas size responsive to window size
+canvas.width = window.innerWidth * 0.55;
+canvas.height = window.innerHeight * 0.58;
 
 // Populate the shared bricks array
 createBricks(ctx);
@@ -51,6 +52,9 @@ export function drawBricks(ctx, bricks) {
   });
 }
 
+//paddle start position
+paddle.x = canvas.width / 2 - paddle.width / 2;
+paddle.y = canvas.height - paddle.height - 100; 
 // --- Draw the canvas ---
 export function drawCanvas(ctx, canvas) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
