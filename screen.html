@@ -4,68 +4,43 @@
 <head>
   <meta charset="UTF-8">
   <title>About Game</title>
-  <link rel="stylesheet" href="./css/style.css">
-  <style>
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      background: #222;
-      color: white;
-      /* font-family: Arial, sans-serif; */
-    }
-
-    .btn {
-      background: #0095DD;
-      color: white;
-      padding: 12px 24px;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 18px;
-      text-decoration: none;
-      /* remove underline */
-      transition: 0.3s;
-    }
-
-    .btn:hover {
-      background: #0077b6;
-    }
-  </style>
+  <link rel="stylesheet" href="./css/screen.css">
+  
 </head>
 
 <body>
   <div>
-    <h1>Breakout Game 🎮</h1>
+    <h1 >Breakout Game 🎮</h1>
 
     <!-- Start Menu Overlay -->
     <div id="welcomeScreen" class="overlay">
 
-      <p><strong>How to Play:</strong></p>
+      <p style="color: rgb(57, 29, 75); "><strong>How to Play:</strong></p>
       <ul>
         <li>⬅️ ➡️ : Move Paddle</li><br>
-        <li>␣ (Space): Launch Ball</li><br>
-        <li>🖱️ Move Mouse: Control Paddle</li><br>
-        <li>🖱️ Click: Launch Ball</li><br>
-        <li>🏆 Score Points by Hitting Bricks</li>
+        <li> --space--git Launch Ball</li><br>
+        <li>🖱️ Move Mouse : Control Paddle</li><br>
+        <li>🖱️ Click : Launch Ball</li><br>
+        <li>🥇 Score Points by Hitting Bricks</li>
       </ul>
-
-      <!-- enter your name-->
-      <label for="playerName">Enter Your Name:</label><br>
-      <input type="text" id="playerName" placeholder="Your name..." />
-
       <br><br>
 
+      <!-- enter your name-->
+      <label for="playerName" style="color: rgb(57, 29, 75); ">Enter Your Name:</label><br>
+      <input type="text" id="playerName" placeholder="Your name..." />
+
+      <br>
+
       <!-- select your level-->
-      <label for="levelSelect">Choose Level:</label><br>
+      <label for="levelSelect" style="color: rgb(57, 29, 75); ">Choose Level:</label><br>
       <select id="levelSelect">
         <option value="1">HARD</option>
         <option value="2">MID</option>
         <option value="3">EASY</option>
       </select>
 
-      <br><br>
+      <br>
+
 
       <!-- Start button -->
       <button id="startBtn" class="btn">Start Game</button>
