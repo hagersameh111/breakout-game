@@ -1,8 +1,10 @@
+import { gameState } from "./gameState.js";
 import { ball, paddle, bricks } from "./objects.js";
 import { keys, mouse } from "./input.js";
 import { loadTopScore } from "./state.js";
 import { wallCollision, groundCollision, paddleCollision, bricksCollision } from "./collision.js";
 
+let ballLaunched = false;
 
 // Move ball with wall and paddle bounce  
 export function moveBall(canvas) {
@@ -12,12 +14,8 @@ export function moveBall(canvas) {
   }
   ball.x += ball.dx;
   ball.y += ball.dy;
-  
-  // Log the current speed
-  const speed = Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy);
-  console.log("Ball speed:", speed.toFixed(2));
-}
 
+}
 
 // Keep ball on paddle before launch
 export function ballOnPaddle() {
@@ -47,21 +45,20 @@ export function movePaddle(canvas) {
 }
 
 
-
-// Launch ball on spacebar press
 export function launchBall() {
-  if (ball.onPaddle && keys.space) {
+  if (!ballLaunched && ball.onPaddle) {
     ball.onPaddle = false;
-    // Launch straight up from the paddle center
     ball.x = paddle.x + paddle.width / 2;
     ball.y = paddle.y - ball.radius;
     ball.dx = 0;
     ball.dy = -ball.speed;
+    ballLaunched = true;
   }
 }
 
-// Game loop
 export function gameLoop(canvas, ctx, drawCanvas) {
+  if (!gameState.started) return; // stop until game starts
+
   movePaddle(canvas);
   launchBall();
   moveBall(canvas);
@@ -72,7 +69,6 @@ export function gameLoop(canvas, ctx, drawCanvas) {
   paddleCollision();
 
   drawCanvas(ctx, canvas, paddle, ball, bricks);
-  requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
 
-  loadTopScore();
+  requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
 }

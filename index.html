@@ -55,29 +55,12 @@
   <script type="module" src="./js/input.js"></script>
   <script type="module" src="./js/motion.js"></script>
   <script type="module" src="./js/script.js"></script>
+  <script type="module" src="./js/collision.js"></script>
+  <script type="module" src="./js/levels.js"></script>
+  <script type="module" src="./js/state.js"></script>
 
   <!-- Overlay Logic -->
-  <script type="module">
-    import { loadLevelByIndex, resetLevels } from "./js/levels.js";
-    import { canvas, ctx } from "./js/script.js";
-
-    document.getElementById('startBtn').addEventListener('click', () => {
-      const playerName = document.getElementById('playerName').value || "Player";
-      const levelIndex = parseInt(document.getElementById('levelSelect').value);
-
-      localStorage.setItem('playerName', playerName);
-      localStorage.setItem('selectedLevel', levelIndex);
-
-      // Hide overlay
-      document.getElementById('welcomeScreen').style.display = "none";
-
-      // Load selected level
-      loadLevelByIndex(levelIndex-1, canvas, ctx);
-
-      // Start the game loop if not already started
-      // gameLoop(canvas, ctx, drawCanvas);
-    });
-  </script>
+  <script type="module" src="./main.js"></script>
 
 </body>
 

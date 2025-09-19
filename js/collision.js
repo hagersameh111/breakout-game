@@ -130,6 +130,5 @@ export function paddleCollision(){
     ball.dx = speed * Math.sin(angle);
     ball.dy = -speed * Math.cos(angle);
   }
-
 }
 
