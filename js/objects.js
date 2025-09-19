@@ -4,7 +4,7 @@ export const ball = {
   radius: 10,
   dx: 7,
   dy: 7,
-  color: "red",
+  color: "purple",
   speed: 5,
   onPaddle: true
 };
@@ -15,7 +15,7 @@ export const paddle = {
   x: 345,
   y: 550,
   speed: 7,
-  color: "blue"
+ 
 };
 
 // --- Brick class ---
