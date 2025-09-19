@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>About Game</title>
+  <link rel="stylesheet" href="./css/screen.css">
+  
+</head>
+
+<body>
+  <div>
+    <h1 >Breakout Game 🎮</h1>
+
+    <!-- Start Menu Overlay -->
+    <div id="welcomeScreen" class="overlay">
+
+      <p style="color: rgb(57, 29, 75); "><strong>How to Play:</strong></p>
+      <ul>
+        <li>⬅️ ➡️ : Move Paddle</li><br>
+        <li>  <kbd> ␣ </kbd>: git Launch Ball</li><br>
+        <li>🖱️ Move Mouse : Control Paddle</li><br>
+        <li>🖱️ Click : Launch Ball</li><br>
+        <li>🥇 Score Points by Hitting Bricks</li>
+      </ul>
+      <br><br>
+
+      <!-- enter your name-->
+      <label for="playerName" style="color: rgb(57, 29, 75); ">Enter Your Name:</label><br>
+      <input type="text" id="playerName" placeholder="Your name..." />
+
+      <br>
+
+      <!-- select your level-->
+      <label for="levelSelect" style="color: rgb(57, 29, 75); ">Choose Level:</label><br>
+      <select id="levelSelect">
+        <option value="1">HARD</option>
+        <option value="2">MID</option>
+        <option value="3">EASY</option>
+      </select>
+
+      <br>
+
+
+      <!-- Start button -->
+      <button id="startBtn" class="btn">Start Game</button>
+    </div>
+  </div>
+
+  <!--When the user clicks the "Start Game" button-->
+  <script>
+    document.getElementById('startBtn').addEventListener('click', () => {
+      const playerName = document.getElementById('playerName').value;
+      const level = document.getElementById('levelSelect').value;
+
+      //save name and level in local storage to use in game page
+      localStorage.setItem('playerName', playerName);
+      localStorage.setItem('selectedLevel', level);
+
+      // Redirect to the game page
+      window.location.href = "index.html";
+    });
+  </script>
+</body>
+
+</html>
