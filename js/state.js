@@ -71,6 +71,7 @@ function updateState() {
         topScoreEl.textContent = state.topScore;
     }
 }
+
 function loseLife() {
     state.lives-=1;
     updateState();

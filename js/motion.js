@@ -45,30 +45,49 @@ export function movePaddle(canvas) {
 }
 
 
-export function launchBall() {
-  if (!ballLaunched && ball.onPaddle) {
+export function launchBall(manual = false) {
+  // Only launch if the ball is on the paddle
+  if (ball.onPaddle) {
     ball.onPaddle = false;
     ball.x = paddle.x + paddle.width / 2;
     ball.y = paddle.y - ball.radius;
     ball.dx = 0;
     ball.dy = -ball.speed;
-    ballLaunched = true;
+    
+    // Mark as launched only if it's an automatic launch
+    if (!manual) ballLaunched = true;
   }
 }
 
 export function gameLoop(canvas, ctx, drawCanvas) {
-  if (!gameState.started) return; // stop until game starts
+  if (!gameState.started) return; // Stop until game starts
 
+  // --- Paddle movement ---
   movePaddle(canvas);
-  launchBall();
-  moveBall(canvas);
 
+  // --- Ball launch ---
+  // Auto-launch at start (only once)
+  if (!ballLaunched) launchBall();     
+
+  // Manual launch if player presses space or clicks
+  if (keys.space || mouse.clicked) launchBall(true);
+
+  // --- Move the ball ---
+  moveBall();
+
+  // --- Collisions ---
   wallCollision(canvas);
   groundCollision(canvas);
   bricksCollision();
   paddleCollision();
 
+  // --- Draw everything ---
   drawCanvas(ctx, canvas, paddle, ball, bricks);
 
+  // Loop
   requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
+
+  // Load top score
+  loadTopScore();
 }
+
