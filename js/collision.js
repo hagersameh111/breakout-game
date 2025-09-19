@@ -81,18 +81,24 @@ export function wallCollision(canvas){
     ball.dx *= -1;
   }
   // Bounce off top wall
-  if (ball.y - ball.radius < 0) {
+  if (ball.y - ball.radius < 100) {
+    ball.y = 100 + ball.radius;
     ball.dy *= -1;
   }
 }
 
-export function groundCollision(canvas){
-  // Reset if falls below canvas
+export function groundCollision(canvas) {
+  // Check if ball falls below canvas
   if (ball.y - ball.radius > canvas.height) {
-    ball.onPaddle = true;
-    ball.dx = ball.speed;
-    ball.dy = ball.speed;
+    // Subtract a life
     loseLife();
+
+    // Reset ball on paddle
+    ball.onPaddle = true;
+    ball.dx = 0;
+    ball.dy = 0;
+    ball.x = paddle.x + paddle.width / 2;
+    ball.y = paddle.y - ball.radius;
   }
 }
 
