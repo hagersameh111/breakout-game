@@ -7,12 +7,17 @@ import { wallCollision, groundCollision, paddleCollision, bricksCollision } from
 // Move ball with wall and paddle bounce  
 export function moveBall(canvas) {
   if (ball.onPaddle) {
-    ballOnPaddle()
+    ballOnPaddle();
     return;
   }
   ball.x += ball.dx;
   ball.y += ball.dy;
+  
+  // Log the current speed
+  const speed = Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy);
+  console.log("Ball speed:", speed.toFixed(2));
 }
+
 
 // Keep ball on paddle before launch
 export function ballOnPaddle() {

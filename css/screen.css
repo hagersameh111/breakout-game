@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Bytesized&family=Jersey+10&family=Pixelify+Sans:wght@500&display=swap');
+
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-image: url(../assets/images/home.jpg);
+    color: #080808;
+    font-family: "Pixelify Sans", sans-serif;
+    font-size: 21px;
+    padding-top: 24px;
+
+
+}
+
+h1 {
+
+    font-size: 46px;
+    color: rgb(57, 29, 75);
+}
+
+.btn {
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background-color: rgb(57, 29, 75);
+    color: rgb(222, 199, 230);
+    padding: 12px 24px;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    font-size: 18px;
+    text-decoration: none;
+    transition: 0.3s;
+    font-family: "Pixelify Sans", sans-serif;
+}
+
+.btn:hover {
+    background: #a100b6;
+}
+
+.overlay {
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+
+}
+
+
+
+input[type="text"] {
+
+ border: 2px solid #391d4b;
+    border: 2px solid #8c00dd;
+     background-color: #bab9c7;
+    border-radius: 16px;
+    width: 200px;
+    box-sizing: border-box;
+    text-align: center;
+     padding: 8px 12px;
+     font-family: "Pixelify Sans", sans-serif ;
+   
+}
+
+ul li {
+    list-style: none;
+}
+#levelSelect {
+    width: 200px;
+    text-align: center;
+  padding: 8px 12px;
+  font-size: 16px;
+  border: 2px solid #391d4b;
+  border-radius: 16px;
+  background-color: #bab9c7;
+  color: #391d4b;
+  font-family: "Pixelify Sans", sans-serif;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+#levelSelect:hover {
+    background-color: #bab9c7;
+  border-color: #6a3a9a;
+}
+kbd {
+  background: #7ee0d0;
+  border: 2px solid #999;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 14px;
+  font-family: monospace;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
