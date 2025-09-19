@@ -17,15 +17,26 @@ export function drawBall(ctx, ball) {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
   ctx.fillStyle = ball.color;
+   ctx.shadowColor = "rgba(235, 222, 41, 1)";
   ctx.fill();
   ctx.closePath();
 }
-
 // --- Draw Paddle ---
 export function drawPaddle(ctx, paddle) {
-  ctx.fillStyle = paddle.color;
+  // Create gradient from top (paddle.y) to bottom (paddle.y + paddle.height)
+  const gradient = ctx.createLinearGradient(
+    paddle.x, paddle.y,               // start (top)
+    paddle.x, paddle.y + paddle.height // end (bottom)
+  );
+
+  gradient.addColorStop(0, "#a25d70");  // Top color
+  gradient.addColorStop(1, "#e7c722");  // Bottom color
+ ctx.shadowColor = "rgba(199, 125, 233, 1)";
+  ctx.fillStyle = gradient;
+  
   ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
 }
+
 
 // --- Draw Bricks ---
 export function drawBricks(ctx, bricks) {
