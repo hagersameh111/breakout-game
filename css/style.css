@@ -3,33 +3,37 @@
 
 /* ---------- Base ---------- */
 body {
-  margin: 0;
+margin: 0;
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
+  align-items: center;     
+  height: 100vh;           
   background-image: url(../assets/images/bg.jpg);
   font-family: "Pixelify Sans", sans-serif;
   color: aliceblue;
   position: relative;
+  overflow: hidden; /* Prevents scrollbars if canvas is large */
 }
 
 .game-container {
-  position: relative; /* anchor HUD + overlay */
-  display: inline-block;
+  position: relative;
+  width: 95vw; /* Use viewport width for sizing */
+  max-width: 1000px; /* Corresponds to your canvas width for 1:1 scaling */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 canvas {
-  display: block;
-  max-width: 90vw;   /* never wider than 90% of screen */
-  max-height: 80vh;  /* never taller than 80% of screen */
-  width: 800px;      /* default size */
-  height: 600px;     /* default size */
-  margin: auto;
   border: 2px solid #0095DD;
   background-image: url("../assets/images/cb.jpg");
   background-size: cover;
   background-position: center;
+  background-repeat: no-repeat;
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: contain;
 }
 
 
@@ -42,7 +46,7 @@ canvas {
   display: flex;
   justify-content: space-between; /* spread across */
   align-items: center;
-  font-size: 22px;
+  font-size: 26px;
   font-weight: bold;
   color: rgb(57, 29, 75);
   padding: 0 20px;
