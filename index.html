@@ -9,8 +9,15 @@
 </head>
 
 <body>
-
-  <canvas id="myCanvas"></canvas>
+ 
+  <div class="game-container">
+    
+    <canvas id="myCanvas"></canvas>
+    <div class="hud">
+      <div>Score: <span id="score">0</span></div>
+      <div>Top Score: <span id="topScore">0</span></div>
+    </div>
+  </div>
 
 
 
@@ -19,13 +26,7 @@
   <script type="module" src="./js/motion.js"></script>
   <script type="module" src="./js/script.js"></script>
 
-  <div class="hud">
-    <div class="left">
-      <div>Score: <span id="score">0</span></div>
-      <div>Lives: <span id="lives">3</span></div>
-      <div>Top Score: <span id="topScore">0</span></div>
-    </div>
-  </div>
+ 
 
 </body>
 
