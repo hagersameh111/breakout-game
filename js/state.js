@@ -2,7 +2,7 @@ import { createBricks } from "./objects.js";
 
 const topScoreEl = document.getElementById('topScore');
 const scoreEl = document.getElementById('score');
-const livesEl = document.getElementById('lives');
+//const livesEl = document.getElementById('lives');
 
 const config = {
     pointsPerBrick: 10,
@@ -18,20 +18,23 @@ const state = {
 }
 
 // Draw remaining lives as hearts
+// Preload heart image once
+const heartImg = new Image();
+heartImg.src = "https://img.icons8.com/fluency/24/pixel-heart.png";
+
+// Draw remaining lives as hearts
 export function drawLives(ctx, canvas) {
-  ctx.font = "25px Arial";       
-  ctx.fillStyle = "red";      
-  ctx.textAlign = "right";
-  ctx.textBaseline = "top";
+  const heartSize =36;     // width & height for each heart
+  const padding = -1;        // space between hearts
 
-// Draw hearts for lives
-  let hearts = "";
   for (let i = 0; i < state.lives; i++) {
-    hearts += "❤️";
+    // draw from right → left
+    const x = canvas.width - (i + 1) * (heartSize + padding) - 50;
+    const y = 10;
+    ctx.drawImage(heartImg, x, y, heartSize, heartSize);
   }
-
-  ctx.fillText(hearts, canvas.width - 10, 10);
 }
+
 
 function saveTopScore() {
     localStorage.setItem(config.localStorageKey, state.topScore);
@@ -52,7 +55,7 @@ function resetState() {
 
 function updateState() {
     scoreEl.textContent = state.score;
-    livesEl.textContent = state.lives;
+    //livesEl.textContent = state.lives;
     // topScoreEl.textContent = localStorage.getItem(config.localStorageKey);
 
 
