@@ -48,21 +48,21 @@ export class Brick {
 export const bricks = [];
 
 const brickImagesSrc = [
-  "../assets/images/a.jpg",
-  "../assets/images/bam.jpg",
-  "../assets/images/e.jpg",
-  "../assets/images/f.jpg",
-  "../assets/images/k.jpg",
-  "../assets/images/g.jpg",
-  "../assets/images/j.jpg",
-  "../assets/images/o.jpg",
-  "../assets/images/k.jpg",
-  "../assets/images/e.jpg",
-  "../assets/images/j.jpg",
-  "../assets/images/d.jpg",
-  "../assets/images/c.jpg",
-  "../assets/images/e.jpg",
-  "../assets/images/h.jpg",
+  "./assets/images/a.jpg",
+  "./assets/images/bam.jpg",
+  "./assets/images/e.jpg",
+  "./assets/images/f.jpg",
+  "./assets/images/k.jpg",
+  "./assets/images/g.jpg",
+  "./assets/images/j.jpg",
+  "./assets/images/o.jpg",
+  "./assets/images/k.jpg",
+  "./assets/images/e.jpg",
+  "./assets/images/j.jpg",
+  "./assets/images/d.jpg",
+  "./assets/images/c.jpg",
+  "./assets/images/e.jpg",
+  "./assets/images/h.jpg",
   
  
 
@@ -71,8 +71,11 @@ export function createBricks(ctx, levelId) {
   const brickWidth = 60;
   const brickHeight = 30;
   const padding = 5;
-  const offsetTop = 80;
+  const offsetTop = 100;
+  
 
+  const themes = ["pyramid", "wall", "diamond"];
+  const theme = themes[Math.floor(Math.random() * themes.length)];
   let generatedBricks = [];
   let imgIndex = 0;
 

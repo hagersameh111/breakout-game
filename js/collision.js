@@ -81,7 +81,8 @@ export function wallCollision(canvas){
     ball.dx *= -1;
   }
   // Bounce off top wall
-  if (ball.y - ball.radius < 0) {
+  if (ball.y - ball.radius < 100) {
+    ball.y = 100 + ball.radius;
     ball.dy *= -1;
   }
 }
