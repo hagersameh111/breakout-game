@@ -1,23 +1,44 @@
 /*font*/
-@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Jersey+10&display=swap');
-body {
-    margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;     
-      height: 100vh;           
-    background-image: url(../assets/images/bg.jpg);
-      font-family: "Bitcount Grid Double", sans-serif;
-      color: aliceblue;
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Bytesized&family=Jersey+10&family=Pixelify+Sans:wght@500&display=swap');
 
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;     
+  height: 100vh;           
+  background-image: url(../assets/images/bg.jpg);
+  font-family: "Pixelify Sans", sans-serif;
+  color: aliceblue;
+  position: relative;   /* <-- important */
 }
 
 
- canvas {
+
+.game-container {
+  position: relative;  /* makes HUD position relative to canvas */
+  display: inline-block; /* shrink-wraps to canvas size */
+}
+
+canvas {
   border: 2px solid #0095DD;
   background-image: url("../assets/images/cb.jpg");
-  background-size: cover;      /* fits image inside canvas, no cropping */
+  background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   display: block;
 }
+
+.hud {
+ position: absolute;
+  top: 10px;
+  left: 10px; 
+  display: flex;  
+  gap: 15vw;
+  font-size: 26px;
+  font-weight: bold;
+  color: rgb(57, 29, 75);
+  margin-left: 50px;
+  
+}
+
