@@ -1,44 +1,155 @@
-/*font*/
+/* Fonts */
 @import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double:wght@100..900&family=Bytesized&family=Jersey+10&family=Pixelify+Sans:wght@500&display=swap');
 
+/* ---------- Base ---------- */
 body {
   margin: 0;
   display: flex;
   justify-content: center;
-  align-items: center;     
-  height: 100vh;           
+  align-items: center;
+  height: 100vh;
   background-image: url(../assets/images/bg.jpg);
   font-family: "Pixelify Sans", sans-serif;
   color: aliceblue;
-  position: relative;   /* <-- important */
+  position: relative;
 }
 
-
-
 .game-container {
-  position: relative;  /* makes HUD position relative to canvas */
-  display: inline-block; /* shrink-wraps to canvas size */
+  position: relative; /* anchor HUD + overlay */
+  display: inline-block;
 }
 
 canvas {
+  display: block;
+  max-width: 90vw;   /* never wider than 90% of screen */
+  max-height: 80vh;  /* never taller than 80% of screen */
+  width: 800px;      /* default size */
+  height: 600px;     /* default size */
+  margin: auto;
   border: 2px solid #0095DD;
   background-image: url("../assets/images/cb.jpg");
   background-size: cover;
   background-position: center;
-  background-repeat: no-repeat;
-  display: block;
 }
 
+
+/* ---------- HUD ---------- */
 .hud {
- position: absolute;
-  top: 10px;
-  left: 10px; 
-  display: flex;  
-  gap: 15vw;
-  font-size: 26px;
+  position: absolute;
+  top: 25px;
+  left: 0;
+  width: 100%;              /* span full canvas */
+  display: flex;
+  justify-content: space-between; /* spread across */
+  align-items: center;
+  font-size: 22px;
   font-weight: bold;
   color: rgb(57, 29, 75);
-  margin-left: 50px;
-  
+  padding: 0 20px;
+  box-sizing: border-box;
 }
 
+.hud div:first-child {
+  text-align: left;   /* Score left */
+}
+
+.hud div:last-child {
+  position: absolute; /* Top Score centered */
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+/* ---------- Overlay ---------- */
+.overlay {
+  position: fixed; /* covers the whole screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(128, 128, 128, 0.85); /* grey with opacity */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10; /* always above game */
+}
+
+.overlay-content {
+  text-align: center;
+  color: white;
+  padding: 20px;
+}
+
+.overlay-content h1 {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.overlay-content p {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.overlay-content ul {
+  list-style: none;
+  padding: 0;
+  margin: 15px 0 25px;
+}
+
+.overlay-content ul li {
+  margin: 6px 0;
+  font-size: 18px;
+}
+
+/* ---------- Inputs ---------- */
+.overlay-content input[type="text"],
+.overlay-content select {
+  width: 220px;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 12px;
+  border: 2px solid #391d4b;
+  font-size: 16px;
+  text-align: center;
+  background-color: #bab9c7;
+  color: #391d4b;
+  font-family: "Pixelify Sans", sans-serif;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.overlay-content select:hover,
+.overlay-content input[type="text"]:focus {
+  border-color: #6a3a9a;
+  outline: none;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  background-color: rgb(57, 29, 75);
+  color: rgb(222, 199, 230);
+  padding: 12px 24px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: 0.3s;
+  font-family: "Pixelify Sans", sans-serif;
+  margin-top: 15px;
+}
+
+.btn:hover {
+  background: #a100b6;
+}
+
+/* ---------- Keys ---------- */
+kbd {
+  background: #7ee0d0;
+  border: 2px solid #999;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 14px;
+  font-family: monospace;
+  box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
