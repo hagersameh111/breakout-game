@@ -1,4 +1,7 @@
-import { createBricks } from "./objects.js"; 
+import { createBricks , ball , paddle} from "./objects.js"; 
+import { sounds, playSound } from "./sound.js";
+import { ctx } from "./script.js";
+import { lvlI } from "../main.js";
 
 const topScoreEl = document.getElementById('topScore');
 const scoreEl = document.getElementById('score');
@@ -45,12 +48,19 @@ function loadTopScore() {
     topScoreEl.textContent = localStorage.getItem(config.localStorageKey);
 }
 
-function resetState() {
+function resetState(ctx) {
     state.score = 0;
     state.lives = config.startingLives;
     state.topScore = localStorage.getItem(config.localStorageKey) || 0;
     updateState();
-    createBricks(document.getElementById("myCanvas").getContext("2d"));
+    
+    createBricks(ctx,lvlI.id);
+
+    ball.x = paddle.x + paddle.width / 2;
+    ball.y = paddle.y - ball.radius;
+    ball.dx = ball.speed;  
+    ball.dy = -ball.speed;
+    ball.onPaddle = true;
 }
 
 function updateState() {
@@ -64,7 +74,8 @@ function updateState() {
         saveTopScore();
         topScoreEl.textContent = state.topScore;
     }
-}function openModal(message) {
+}
+function openModal(message) {
   document.getElementById("modalMessage").textContent = message;
   document.getElementById("gameModal").style.display = "flex";
 }
@@ -73,17 +84,21 @@ function closeModal() {
   document.getElementById("gameModal").style.display = "none";
 }
 
-function loseLife() {
+function loseLife(ctx) {
   state.lives -= 1;
   updateState();
+    playSound(sounds.loseLife);
 
   if (state.lives <= 0) {
     openModal(" Game Over 💀 ");
+    playSound(sounds.gameOver);
+    resetState(ctx);
   }
 }
 
-function winGame() {
-  openModal("You Won! 🎉 ");
+function winGame(ctx) {
+    openModal("You Won! 🎉 ");
+    resetState(ctx);
 }
 
 export { config, state, updateState, loadTopScore, saveTopScore, loseLife , winGame}
