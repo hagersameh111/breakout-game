@@ -15,7 +15,7 @@ export const paddle = {
   x: 345,
   y: 550,
   speed: 7,
- 
+
 };
 
 
@@ -28,9 +28,36 @@ export class Brick {
     this.height = height;
     this.color = color;
     this.destroyed = false;
+    this.breaking = false;  //  animation state
+    this.halves = [];       // will store halves
     this.imageSrc = imageSrc;
     this.image = null;
   }
+  split() {
+    const halfWidth = this.width / 2;
+
+    this.halves = [
+      {
+        // left half
+        sx: 0, sy: 0,
+        sw: this.image.width / 2, sh: this.image.height,
+        dx: this.x, dy: this.y,
+        dw: halfWidth, dh: this.height,
+        dxSpeed: -4,    // move left
+        dySpeed: 6      // fall down fast
+      },
+      {
+        // right half
+        sx: this.image.width / 2, sy: 0,
+        sw: this.image.width / 2, sh: this.image.height,
+        dx: this.x + halfWidth, dy: this.y,
+        dw: halfWidth, dh: this.height,
+        dxSpeed: 4,     // move right
+        dySpeed: 6
+      }
+    ];
+  }
+
   get left() {
     return this.x;
   }
@@ -44,6 +71,7 @@ export class Brick {
     return this.y + this.height;
   }
 }
+
 
 export const bricks = [];
 
@@ -70,7 +98,7 @@ export function createBricks(ctx, levelId) {
   const brickHeight = 30;
   const padding = 5;
   const offsetTop = 100;
-  
+
 
   const themes = ["pyramid", "wall", "diamond"];
   const theme = themes[Math.floor(Math.random() * themes.length)];

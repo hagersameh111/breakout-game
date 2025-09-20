@@ -30,16 +30,16 @@ export const ctx = canvas.getContext("2d");
 // resizeCanvas(canvas);
 // window.addEventListener("resize", () => resizeCanvas(canvas));
 
-          // canvas.width = 1000;
-          // canvas.height = 600;
+// canvas.width = 1000;
+// canvas.height = 600;
 
-          // paddle.width = canvas.width * 0.13;   // 15% of canvas width
-          // paddle.height = canvas.height * 0.02; // 3% of canvas heigh
+// paddle.width = canvas.width * 0.13;   // 15% of canvas width
+// paddle.height = canvas.height * 0.02; // 3% of canvas heigh
 
-          // paddle.x = canvas.width / 2 - paddle.width / 2;
-          // paddle.y = canvas.height - paddle.height - 10; 
+// paddle.x = canvas.width / 2 - paddle.width / 2;
+// paddle.y = canvas.height - paddle.height - 10; 
 
-  const GAME_WIDTH = 1100;   // internal drawing resolution (keeps physics stable)
+const GAME_WIDTH = 1100;   // internal drawing resolution (keeps physics stable)
 const GAME_HEIGHT = 700;
 
 // Set internal resolution (used for all game math)
@@ -89,47 +89,62 @@ export function drawPaddle(ctx, paddle) {
     paddle.x, paddle.y,
     paddle.x, paddle.y + paddle.height
   );
-
   gradient.addColorStop(0, "#a25d70");  // Top color
-  gradient.addColorStop(1, "#e7c722");  // Bottom color
+  gradient.addColorStop(1, "#e7c722");
 
-  ctx.shadowColor = "rgba(199, 125, 233, 1)";
-  ctx.shadowBlur = 6;
+  // 🔥 Pulsating glow (sin wave)
+  const time = Date.now() * 0.005; // speed of pulsing
+  const pulse = (Math.sin(time) + 1) / 2; // 0 → 1
+  const glowStrength = 10 + pulse * 40;   // min 10, max 50
+
+  ctx.shadowColor = "#008b8b"; // neon pink glow
+  ctx.shadowBlur = glowStrength;
+  ctx.shadowOffsetX = 0;
+  ctx.shadowOffsetY = 0;
 
   ctx.fillStyle = gradient;
   ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
 
-  // Reset shadow so other objects aren’t affected
+  // White outline for visibility
+  ctx.lineWidth = 4;
+  ctx.strokeStyle = "rgba(255,255,255,0.9)";
+  ctx.strokeRect(paddle.x, paddle.y, paddle.width, paddle.height);
+
+  // Reset shadow
   ctx.shadowBlur = 0;
 }
 
-// --- Draw Bricks ---
+
 export function drawBricks(ctx, bricks) {
   bricks.forEach((brick) => {
-    if (!brick.destroyed) {
+    if (brick.breaking && brick.halves.length > 0) {
+      brick.halves.forEach((half) => {
+        half.dx += half.dxSpeed;
+        half.dy += half.dySpeed;
+        half.dySpeed += 0.4; // gravity boost
+
+        if (brick.image && brick.image.complete) {
+          ctx.drawImage(
+            brick.image,
+            half.sx, half.sy, half.sw, half.sh,
+            half.dx, half.dy, half.dw, half.dh
+          );
+        }
+      });
+    }
+    else if (!brick.destroyed) {
+      // normal brick drawing
       if (brick.image && brick.image.complete) {
-        // draw pics on bricks
         ctx.drawImage(brick.image, brick.x, brick.y, brick.width, brick.height);
-
-        // shadows
-        ctx.shadowColor = "rgba(125, 202, 233, 1)";
-        ctx.shadowBlur = 6;
-        ctx.shadowOffsetX = 3;
-        ctx.shadowOffsetY = 3;
-
-        // borders
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = "black";
-        ctx.strokeRect(brick.x, brick.y, brick.width, brick.height);
-
       } else {
-        // fallback: grey bricks
         ctx.fillStyle = brick.color || "gray";
         ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
       }
     }
   });
 }
+
+
 
 // --- Draw the canvas ---
 export function drawCanvas(ctx, canvas) {

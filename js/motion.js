@@ -85,6 +85,7 @@ export function gameLoop(canvas, ctx, drawCanvas) {
   bricksCollision();
   
   drawCanvas(ctx, canvas, paddle, ball, bricks);
+  
 
   requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
   loadTopScore();

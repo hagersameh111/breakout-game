@@ -1,5 +1,5 @@
 import { ball, paddle, bricks } from './objects.js';
-import { config, state, updateState , winGame} from './state.js'
+import { config, state, updateState, winGame } from './state.js'
 import { loseLife } from './state.js';
 import { powerUps, spawnRandomPowerUp } from "./powerups.js";
 
@@ -34,7 +34,35 @@ export function bricksCollision() {
           ball.dy = Math.abs(ball.dy); // hit bottom side
         }
 
+        // --- breaking brick in halves---
         brick.destroyed = true;
+        brick.breaking = true;
+        brick.split();   // <-- create halves
+        // split into halves using image slices
+        const halfWidth = brick.width / 2;
+        const halfHeight = brick.height;
+
+        brick.halves = [
+          {
+            // left half
+            sx: 0, sy: 0,                     // crop from source image
+            sw: brick.image.width / 2, sh: brick.image.height,
+            dx: brick.x, dy: brick.y,         // draw position
+            dw: halfWidth, dh: halfHeight,    // draw size
+            dxSpeed: -2,
+            dySpeed: 3
+          },
+          {
+            // right half
+            sx: brick.image.width / 2, sy: 0,
+            sw: brick.image.width / 2, sh: brick.image.height,
+            dx: brick.x + halfWidth, dy: brick.y,
+            dw: halfWidth, dh: halfHeight,
+            dxSpeed: 2,
+            dySpeed: 3
+          }
+        ];
+
         state.score += config.pointsPerBrick;
         updateState();
         brickHit = true;
@@ -43,7 +71,6 @@ export function bricksCollision() {
         if (Math.random() < 0.1 && powerUps.length < 2) {
           spawnRandomPowerUp(brick.left + brick.width / 2, brick.top);
         }
-        
       }
     }
   });
@@ -56,9 +83,7 @@ export function bricksCollision() {
   }
 }
 
-
-
-export function wallCollision(canvas){
+export function wallCollision(canvas) {
   // Bounce off left and right walls
   if (ball.x + ball.radius > canvas.width || ball.x - ball.radius < 0) {
     ball.dx *= -1;
@@ -85,7 +110,7 @@ export function groundCollision(canvas) {
   }
 }
 
-export function paddleCollision(){
+export function paddleCollision() {
   // Bounce off paddle
   if (
     ball.y + ball.radius >= paddle.y &&
