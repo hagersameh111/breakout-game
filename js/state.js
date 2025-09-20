@@ -1,4 +1,7 @@
 import { createBricks , ball , paddle} from "./objects.js"; 
+import { sounds, playSound } from "./sound.js";
+import { ctx } from "./script.js";
+import { lvlI } from "../main.js";
 
 const topScoreEl = document.getElementById('topScore');
 const scoreEl = document.getElementById('score');
@@ -45,12 +48,13 @@ function loadTopScore() {
     topScoreEl.textContent = localStorage.getItem(config.localStorageKey);
 }
 
-function resetState() {
+function resetState(ctx) {
     state.score = 0;
     state.lives = config.startingLives;
     state.topScore = localStorage.getItem(config.localStorageKey) || 0;
     updateState();
-    createBricks(document.getElementById("myCanvas").getContext("2d"));
+    
+    createBricks(ctx,lvlI.id);
 
     ball.x = paddle.x + paddle.width / 2;
     ball.y = paddle.y - ball.radius;
@@ -72,18 +76,21 @@ function updateState() {
     }
 }
 
-function loseLife() {
+function loseLife(ctx) {
     state.lives-=1;
     updateState();
+    playSound(sounds.loseLife);
 
     if(state.lives <= 0) {
+        playSound(sounds.gameOver);
         alert("Game Over");
-        resetState();
+        resetState(ctx);
     }
 }
 
-function winGame() {
+function winGame(ctx) {
     alert("🎉 You Won!");
-    resetState();
+    resetState(ctx);
 }
+
 export { config, state, updateState, loadTopScore, saveTopScore, loseLife , winGame}

@@ -4,6 +4,7 @@ import { keys, mouse } from "./input.js";
 import { loadTopScore } from "./state.js";
 import { wallCollision, groundCollision, paddleCollision, bricksCollision } from "./collision.js";
 import { powerUps, spawnRandomPowerUp, paddleCollisionWithPowerUps } from "./powerups.js";
+import { sounds, playSound } from "./sound.js";
 
 let ballLaunched = false;
 
@@ -63,31 +64,31 @@ export function launchBall(manual = false) {
 
 export function gameLoop(canvas, ctx, drawCanvas) {
   if (!gameState.started) return; // stop until game starts
-
+  
   movePaddle(canvas);
-
+  
   if (!ballLaunched) launchBall();     
   if (keys.space || mouse.clicked) launchBall(true);
-
+  
   // Update power-ups (falling)
   powerUps.forEach((pu, index) => {
     pu.update();
     if (pu.y > canvas.height) powerUps.splice(index, 1);
   });
-
+  
   // Check collisions with paddle
   paddleCollision();              // existing ball collision
   paddleCollisionWithPowerUps();  // power-ups collision
-
+  
   moveBall();
   wallCollision(canvas);
-  groundCollision(canvas);
-  bricksCollision();
+  groundCollision(canvas, ctx);
+  bricksCollision(ctx);
   
   drawCanvas(ctx, canvas, paddle, ball, bricks);
-  
 
   requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
   loadTopScore();
+  sounds.bgMusic.play();
 }
 
