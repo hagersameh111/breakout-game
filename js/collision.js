@@ -8,54 +8,63 @@ import { powerUps, spawnRandomPowerUp } from "./powerups.js";
 export function bricksCollision() {
   let brickHit = false;
 
-  bricks.forEach((brick) => {
-    if (!brick.destroyed) {
-      if (
-        ball.x + ball.radius > brick.left &&
-        ball.x - ball.radius < brick.right &&
-        ball.y + ball.radius > brick.top &&
-        ball.y - ball.radius < brick.bottom
-      ) {
-        // Compute overlap on each side
-        const overlapLeft = ball.x + ball.radius - brick.left;
-        const overlapRight = brick.right - (ball.x - ball.radius);
-        const overlapTop = ball.y + ball.radius - brick.top;
-        const overlapBottom = brick.bottom - (ball.y - ball.radius);
+  bricks.forEach((row) => {
+    row.forEach((brick) => {
+      if (!brick.destroyed) {
+        if (
+          ball.x + ball.radius > brick.left &&
+          ball.x - ball.radius < brick.right &&
+          ball.y + ball.radius > brick.top &&
+          ball.y - ball.radius < brick.bottom
+        ) {
+          // Compute overlap on each side
+          const overlapLeft = ball.x + ball.radius - brick.left;
+          const overlapRight = brick.right - (ball.x - ball.radius);
+          const overlapTop = ball.y + ball.radius - brick.top;
+          const overlapBottom = brick.bottom - (ball.y - ball.radius);
 
-        const minOverlap = Math.min(overlapLeft, overlapRight, overlapTop, overlapBottom);
+          const minOverlap = Math.min(
+            overlapLeft,
+            overlapRight,
+            overlapTop,
+            overlapBottom
+          );
 
-        // Bounce based on smallest overlap
-        if (minOverlap === overlapLeft) {
-          ball.dx = -Math.abs(ball.dx); // hit left side
-        } else if (minOverlap === overlapRight) {
-          ball.dx = Math.abs(ball.dx); // hit right side
-        } else if (minOverlap === overlapTop) {
-          ball.dy = -Math.abs(ball.dy); // hit top side
-        } else if (minOverlap === overlapBottom) {
-          ball.dy = Math.abs(ball.dy); // hit bottom side
+          // Bounce based on smallest overlap
+          if (minOverlap === overlapLeft) {
+            ball.dx = -Math.abs(ball.dx); // hit left side
+          } else if (minOverlap === overlapRight) {
+            ball.dx = Math.abs(ball.dx); // hit right side
+          } else if (minOverlap === overlapTop) {
+            ball.dy = -Math.abs(ball.dy); // hit top side
+          } else if (minOverlap === overlapBottom) {
+            ball.dy = Math.abs(ball.dy); // hit bottom side
+          }
+
+          brick.destroyed = true;
+          state.score += config.pointsPerBrick;
+          updateState();
+          brickHit = true;
+          playSound(sounds.brickHit);
+
+          // --- Spawn power-up randomly if less than 2 on screen ---
+          if (Math.random() < 0.1 && powerUps.length < 2) {
+            spawnRandomPowerUp(brick.left + brick.width / 2, brick.top);
+          }
         }
-
-        brick.destroyed = true;
-        state.score += config.pointsPerBrick;
-        updateState();
-        brickHit = true;
-                playSound(sounds.brickHit);
-        // --- Spawn power-up randomly if less than 2 on screen ---
-        if (Math.random() < 0.1 && powerUps.length < 2) {
-          spawnRandomPowerUp(brick.left + brick.width / 2, brick.top);
-        }
-        
       }
-    }
+    });
   });
 
   if (brickHit) {
-    const allDestroyed = bricks.every((b) => b.destroyed);
+    // flatten 2D → 1D and check if all destroyed
+    const allDestroyed = bricks.flat().every((b) => b.destroyed);
     if (allDestroyed) {
       setTimeout(() => winGame(), 50);
     }
   }
 }
+
 
 
 

@@ -71,9 +71,6 @@ export function createBricks(ctx, levelId) {
   const padding = 5;
   const offsetTop = 100;
 
-
-  const themes = ["pyramid", "wall", "diamond"];
-  const theme = themes[Math.floor(Math.random() * themes.length)];
   let generatedBricks = [];
   let imgIndex = 0;
 
@@ -82,13 +79,22 @@ export function createBricks(ctx, levelId) {
     let rows = 7;
     let y = offsetTop;
     let mid = Math.floor(rows / 2);
+
     for (let r = 0; r < rows; r++) {
       let count = r <= mid ? r + 1 : rows - r;
       let x = ctx.canvas.width / 2 - (count * (brickWidth + padding)) / 2;
+
+      generatedBricks[r] = []; // create row
+
       for (let c = 0; c < count; c++) {
         const imageSrc = brickImagesSrc[imgIndex % brickImagesSrc.length];
-        generatedBricks.push(
-          new Brick(x, y, brickWidth, brickHeight, `hsl(${c * 50},70%,50%)`, imageSrc)
+        generatedBricks[r][c] = new Brick(
+          x,
+          y,
+          brickWidth,
+          brickHeight,
+          `hsl(${c * 50},70%,50%)`,
+          imageSrc
         );
         x += brickWidth + padding;
         imgIndex++;
@@ -99,13 +105,22 @@ export function createBricks(ctx, levelId) {
     // Level 2 → Pyramid
     let rows = 6;
     let y = offsetTop;
+
     for (let r = 0; r < rows; r++) {
       let rowBricks = r + 1;
       let x = ctx.canvas.width / 2 - (rowBricks * (brickWidth + padding)) / 2;
+
+      generatedBricks[r] = []; // create row
+
       for (let c = 0; c < rowBricks; c++) {
         const imageSrc = brickImagesSrc[imgIndex % brickImagesSrc.length];
-        generatedBricks.push(
-          new Brick(x, y, brickWidth, brickHeight, `hsl(${r * 40},70%,50%)`, imageSrc)
+        generatedBricks[r][c] = new Brick(
+          x,
+          y,
+          brickWidth,
+          brickHeight,
+          `hsl(${r * 40},70%,50%)`,
+          imageSrc
         );
         x += brickWidth + padding;
         imgIndex++;
@@ -117,13 +132,24 @@ export function createBricks(ctx, levelId) {
     let rows = 5;
     let cols = Math.floor(ctx.canvas.width / (brickWidth + padding));
     let y = offsetTop;
+
     for (let r = 0; r < rows; r++) {
       let x = 20;
       if (r % 2 === 1) x += (brickWidth + padding) / 2;
+
+      generatedBricks[r] = []; // create row
+
       for (let c = 0; c < cols; c++) {
         const imageSrc = brickImagesSrc[imgIndex % brickImagesSrc.length];
         let color = r % 2 === 0 ? "red" : "blue";
-        generatedBricks.push(new Brick(x, y, brickWidth, brickHeight, color, imageSrc));
+        generatedBricks[r][c] = new Brick(
+          x,
+          y,
+          brickWidth,
+          brickHeight,
+          color,
+          imageSrc
+        );
         x += brickWidth + padding;
         imgIndex++;
       }
@@ -132,19 +158,23 @@ export function createBricks(ctx, levelId) {
   }
 
   // Load images on bricks
-  generatedBricks.forEach((brick) => {
-    if (brick.imageSrc) {
-      const img = new Image();
-      img.src = brick.imageSrc;
-      brick.image = img;
-    }
-  });
+  generatedBricks.forEach((row) =>
+    row.forEach((brick) => {
+      if (brick.imageSrc) {
+        const img = new Image();
+        img.src = brick.imageSrc;
+        brick.image = img;
+      }
+    })
+  );
 
+  // Replace old global bricks with new 2D array
   bricks.length = 0;
   bricks.push(...generatedBricks);
 
-  return bricks;
+  return generatedBricks; // now returns 2D array
 }
+
 
 
 export let score = 0;
