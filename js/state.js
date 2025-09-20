@@ -1,4 +1,4 @@
-import { createBricks } from "./objects.js"; 
+import { createBricks , ball , paddle} from "./objects.js"; 
 import { sounds, playSound } from "./sound.js";
 
 const topScoreEl = document.getElementById('topScore');
@@ -52,6 +52,12 @@ function resetState() {
     state.topScore = localStorage.getItem(config.localStorageKey) || 0;
     updateState();
     createBricks(document.getElementById("myCanvas").getContext("2d"));
+
+    ball.x = paddle.x + paddle.width / 2;
+    ball.y = paddle.y - ball.radius;
+    ball.dx = ball.speed;  
+    ball.dy = -ball.speed;
+    ball.onPaddle = true;
 }
 
 function updateState() {
@@ -66,6 +72,7 @@ function updateState() {
         topScoreEl.textContent = state.topScore;
     }
 }
+
 function loseLife() {
     state.lives-=1;
     updateState();

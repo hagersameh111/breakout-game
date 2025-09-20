@@ -39,9 +39,9 @@
         <!-- Level Select -->
         <label for="levelSelect">Choose Level:</label><br>
         <select id="levelSelect">
-          <option value="1">HARD</option>
+          <option value="3">HARD</option>
           <option value="2">MID</option>
-          <option value="3">EASY</option>
+          <option value="1">EASY</option>
         </select><br><br>
 
         <!-- Start Button -->
@@ -55,23 +55,13 @@
   <script type="module" src="./js/input.js"></script>
   <script type="module" src="./js/motion.js"></script>
   <script type="module" src="./js/script.js"></script>
+  <script type="module" src="./js/collision.js"></script>
+  <script type="module" src="./js/levels.js"></script>
+  <script type="module" src="./js/state.js"></script>
 
   <!-- Overlay Logic -->
-  <script>
-    document.getElementById('startBtn').addEventListener('click', () => {
-      const playerName = document.getElementById('playerName').value || "Player";
-      const level = document.getElementById('levelSelect').value;
+  <script type="module" src="./main.js"></script>
 
-      localStorage.setItem('playerName', playerName);
-      localStorage.setItem('selectedLevel', level);
-
-      // Hide overlay
-      document.getElementById('welcomeScreen').style.display = "none";
-
-      // Optionally: trigger game start logic here
-      // e.g. call a function from script.js if needed
-    });
-  </script>
 </body>
 
 </html>

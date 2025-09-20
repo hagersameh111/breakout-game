@@ -5,7 +5,7 @@ export const ball = {
   dx: 7,
   dy: 7,
   color: "purple",
-  speed: 5,
+  speed: 7,
   onPaddle: true
 };
 
@@ -18,10 +18,9 @@ export const paddle = {
 
 };
 
-// --- Brick class ---
 
 // --- Brick class ---
-class Brick {
+export class Brick {
   constructor(x, y, width, height, color = "blue", imageSrc = null) {
     this.x = x;
     this.y = y;
@@ -65,11 +64,8 @@ const brickImagesSrc = [
   "./assets/images/e.jpg",
   "./assets/images/h.jpg",
 
-
-
 ];
-
-export function createBricks(ctx) {
+export function createBricks(ctx, levelId) {
   const brickWidth = 60;
   const brickHeight = 30;
   const padding = 5;
@@ -79,44 +75,10 @@ export function createBricks(ctx) {
   const themes = ["pyramid", "wall", "diamond"];
   const theme = themes[Math.floor(Math.random() * themes.length)];
   let generatedBricks = [];
-
   let imgIndex = 0;
 
-  if (theme === "pyramid") {
-    let rows = 6;
-    let y = offsetTop;
-    for (let r = 0; r < rows; r++) {
-      let rowBricks = r + 1;
-      let x = ctx.canvas.width / 2 - (rowBricks * (brickWidth + padding)) / 2;
-      for (let c = 0; c < rowBricks; c++) {
-        const imageSrc = brickImagesSrc[imgIndex % brickImagesSrc.length];
-        generatedBricks.push(
-          new Brick(x, y, brickWidth, brickHeight, `hsl(${r * 40},70%,50%)`, imageSrc)
-        );
-        x += brickWidth + padding;
-        imgIndex++;
-      }
-      y += brickHeight + padding;
-    }
-  } else if (theme === "wall") {
-    let rows = 5;
-    let cols = Math.floor(ctx.canvas.width / (brickWidth * 1.02 + padding));
-    let y = offsetTop;
-    for (let r = 0; r < rows; r++) {
-      let x = 20;
-      if (r % 2 === 1) {
-        x += (brickWidth + padding) / 2;
-      }
-      for (let c = 0; c < cols; c++) {
-        const imageSrc = brickImagesSrc[imgIndex % brickImagesSrc.length];
-        let color = r % 2 === 0 ? "red" : "blue";
-        generatedBricks.push(new Brick(x, y, brickWidth, brickHeight, color, imageSrc));
-        x += brickWidth + padding;
-        imgIndex++;
-      }
-      y += brickHeight + padding;
-    }
-  } else if (theme === "diamond") {
+  if (levelId === "L1") {
+    // Level 1 → Diamond
     let rows = 7;
     let y = offsetTop;
     let mid = Math.floor(rows / 2);
@@ -133,9 +95,43 @@ export function createBricks(ctx) {
       }
       y += brickHeight + padding;
     }
+  } else if (levelId === "L2") {
+    // Level 2 → Pyramid
+    let rows = 6;
+    let y = offsetTop;
+    for (let r = 0; r < rows; r++) {
+      let rowBricks = r + 1;
+      let x = ctx.canvas.width / 2 - (rowBricks * (brickWidth + padding)) / 2;
+      for (let c = 0; c < rowBricks; c++) {
+        const imageSrc = brickImagesSrc[imgIndex % brickImagesSrc.length];
+        generatedBricks.push(
+          new Brick(x, y, brickWidth, brickHeight, `hsl(${r * 40},70%,50%)`, imageSrc)
+        );
+        x += brickWidth + padding;
+        imgIndex++;
+      }
+      y += brickHeight + padding;
+    }
+  } else if (levelId === "L3") {
+    // Level 3 → Wall
+    let rows = 5;
+    let cols = Math.floor(ctx.canvas.width / (brickWidth + padding));
+    let y = offsetTop;
+    for (let r = 0; r < rows; r++) {
+      let x = 20;
+      if (r % 2 === 1) x += (brickWidth + padding) / 2;
+      for (let c = 0; c < cols; c++) {
+        const imageSrc = brickImagesSrc[imgIndex % brickImagesSrc.length];
+        let color = r % 2 === 0 ? "red" : "blue";
+        generatedBricks.push(new Brick(x, y, brickWidth, brickHeight, color, imageSrc));
+        x += brickWidth + padding;
+        imgIndex++;
+      }
+      y += brickHeight + padding;
+    }
   }
 
-  // load pics on bricks
+  // Load images on bricks
   generatedBricks.forEach((brick) => {
     if (brick.imageSrc) {
       const img = new Image();
@@ -150,8 +146,6 @@ export function createBricks(ctx) {
   return bricks;
 }
 
+
 export let score = 0;
 export let lives = 3;
-export const ballState = {
-  Launched: false
-};

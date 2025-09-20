@@ -1,18 +1,22 @@
+import { gameState } from "./gameState.js";
 import { ball, paddle, bricks } from "./objects.js";
 import { keys, mouse } from "./input.js";
 import { loadTopScore } from "./state.js";
 import { wallCollision, groundCollision, paddleCollision, bricksCollision } from "./collision.js";
+import { powerUps, spawnRandomPowerUp, paddleCollisionWithPowerUps } from "./powerups.js";
 import { sounds, playSound } from "./sound.js";
 
+let ballLaunched = false;
 
 // Move ball with wall and paddle bounce  
 export function moveBall(canvas) {
   if (ball.onPaddle) {
-    ballOnPaddle()
+    ballOnPaddle();
     return;
   }
   ball.x += ball.dx;
   ball.y += ball.dy;
+
 }
 
 // Keep ball on paddle before launch
@@ -43,33 +47,48 @@ export function movePaddle(canvas) {
 }
 
 
-
-// Launch ball on spacebar press
-export function launchBall() {
-  if (ball.onPaddle && keys.space) {
+export function launchBall(manual = false) {
+  // Only launch if the ball is on the paddle
+  if (ball.onPaddle) {
     ball.onPaddle = false;
-    // Launch straight up from the paddle center
     ball.x = paddle.x + paddle.width / 2;
     ball.y = paddle.y - ball.radius;
     ball.dx = 0;
     ball.dy = -ball.speed;
+    
+    // Mark as launched only if it's an automatic launch
+    if (!manual) ballLaunched = true;
   }
 }
 
-// Game loop
-export function gameLoop(canvas, ctx, drawCanvas) {
-  movePaddle(canvas);
-  launchBall();
-  moveBall(canvas);
 
+export function gameLoop(canvas, ctx, drawCanvas) {
+  if (!gameState.started) return; // stop until game starts
+  
+  movePaddle(canvas);
+
+  if (!ballLaunched) launchBall();     
+  if (keys.space || mouse.clicked) launchBall(true);
+
+  // Update power-ups (falling)
+  powerUps.forEach((pu, index) => {
+    pu.update();
+    if (pu.y > canvas.height) powerUps.splice(index, 1);
+  });
+
+  // Check collisions with paddle
+  paddleCollision();              // existing ball collision
+  paddleCollisionWithPowerUps();  // power-ups collision
+
+  moveBall();
   wallCollision(canvas);
   groundCollision(canvas);
   bricksCollision();
-  paddleCollision();
-
+  
   drawCanvas(ctx, canvas, paddle, ball, bricks);
-  requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
 
+  requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
   loadTopScore();
   sounds.bgMusic.play();
 }
+

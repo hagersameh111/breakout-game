@@ -1,4 +1,3 @@
-import { ballState } from "./objects.js";
 
 // Keyboard input
 export const keys = {
@@ -47,7 +46,6 @@ canvas.addEventListener("mouseleave", () => {
 // --- Mouse Click (treat left click as Spacebar) ---
 canvas.addEventListener("mousedown", (e) => {
   if (e.button === 0 && !ballState.Launched) { // 0 = left button
-    ballState.Launched = true;
     keys.space = true;
   }
 });
