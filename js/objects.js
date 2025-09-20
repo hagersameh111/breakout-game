@@ -15,8 +15,6 @@ export const paddle = {
   x: 345,
   y: 550,
   speed: 7,
-
-
 };
 
 
@@ -92,8 +90,8 @@ const brickImagesSrc = [
   "./assets/images/c.jpg",
   "./assets/images/e.jpg",
   "./assets/images/h.jpg",
-
 ];
+
 export function createBricks(ctx, levelId) {
   const brickWidth = 60;
   const brickHeight = 30;
@@ -202,8 +200,6 @@ export function createBricks(ctx, levelId) {
 
   return generatedBricks;
 }
-
-
 
 export let score = 0;
 export let lives = 3;

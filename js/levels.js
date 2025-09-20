@@ -50,4 +50,3 @@ export function resetLevels(canvas, ctx) {
   currentLevelIndex = 0;
   return loadLevelByIndex(0, canvas, ctx);
 }
-

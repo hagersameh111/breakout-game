@@ -45,30 +45,6 @@ export function bricksCollision(ctx) {
         brick.destroyed = true;
         brick.breaking = true;
         brick.split();   // <-- create halves
-        // split into halves using image slices
-        // const halfWidth = brick.width / 2;
-        // const halfHeight = brick.height;
-
-        // brick.halves = [
-        //   {
-        //     // left half
-        //     sx: 0, sy: 0,                     // crop from source image
-        //     sw: brick.image.width / 2, sh: brick.image.height,
-        //     dx: brick.x, dy: brick.y,         // draw position
-        //     dw: halfWidth, dh: halfHeight,    // draw size
-        //     dxSpeed: -2,
-        //     dySpeed: 3
-        //   },
-        //   {
-        //     // right half
-        //     sx: brick.image.width / 2, sy: 0,
-        //     sw: brick.image.width / 2, sh: brick.image.height,
-        //     dx: brick.x + halfWidth, dy: brick.y,
-        //     dw: halfWidth, dh: halfHeight,
-        //     dxSpeed: 2,
-        //     dySpeed: 3
-        //   }
-        // ];
 
         state.score += config.pointsPerBrick;
           updateState();
@@ -91,7 +67,6 @@ export function bricksCollision(ctx) {
     }
   }
 }
-
 
 export function wallCollision(canvas) {
   // Bounce off left and right walls
@@ -154,4 +129,3 @@ export function paddleCollision(){
     playSound(sounds.paddleHit);
   }
 }
-
