@@ -63,8 +63,6 @@ const brickImagesSrc = [
   "./assets/images/c.jpg",
   "./assets/images/e.jpg",
   "./assets/images/h.jpg",
-  
- 
 
 ];
 export function createBricks(ctx, levelId) {

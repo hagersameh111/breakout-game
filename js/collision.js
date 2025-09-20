@@ -1,31 +1,8 @@
 import { ball, paddle, bricks } from './objects.js';
 import { config, state, updateState , winGame} from './state.js'
 import { loseLife } from './state.js';
+import { powerUps, spawnRandomPowerUp } from "./powerups.js";
 
-// export function bricksCollision() {
-//     // console.log(ball.x);
-//     // console.log(ball.y);
-//     // console.log(bricks.y);
-//     let brickHit = false;
-//     bricks.forEach((brick) => {
-//         if (!brick.destroyed) {
-//             if (ball.x + ball.radius > brick.left && ball.x - ball.radius < brick.right && ball.y + ball.radius > brick.top && ball.y - ball.radius < brick.bottom) {
-//                 brick.destroyed = true;
-//                 ball.dy *= -1;
-//                 state.score += config.pointsPerBrick;
-//                 updateState();
-//                 brickHit = true; 
-
-//             }
-//         }
-//     })
-//       if (brickHit) {
-//         const allDestroyed = bricks.every(b => b.destroyed);
-//         if (allDestroyed) {
-//             setTimeout(() => winGame(), 50); 
-//         }
-//     }
-// }
 
 export function bricksCollision() {
   let brickHit = false;
@@ -61,6 +38,12 @@ export function bricksCollision() {
         state.score += config.pointsPerBrick;
         updateState();
         brickHit = true;
+
+        // --- Spawn power-up randomly if less than 2 on screen ---
+        if (Math.random() < 0.1 && powerUps.length < 2) {
+          spawnRandomPowerUp(brick.left + brick.width / 2, brick.top);
+        }
+        
       }
     }
   });

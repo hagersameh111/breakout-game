@@ -1,6 +1,8 @@
 import { ball, paddle, bricks, createBricks } from "./objects.js";
 import { gameLoop } from "./motion.js";
 import { drawLives } from "./state.js";
+import { powerUps, spawnRandomPowerUp } from "./powerups.js";
+
 
 export const canvas = document.getElementById("myCanvas");
 export const ctx = canvas.getContext("2d");
@@ -136,6 +138,9 @@ export function drawCanvas(ctx, canvas) {
   drawPaddle(ctx, paddle);
   drawBricks(ctx, bricks);
   drawLives(ctx, canvas);
+
+  // Draw all power-ups on top
+  powerUps.forEach(pu => pu.draw(ctx));
 }
 
 // --- Start game loop ---
