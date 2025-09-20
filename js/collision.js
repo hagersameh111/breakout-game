@@ -1,4 +1,4 @@
-import { ball, paddle, bricks } from './objects.js';
+import { ball, paddle, bricks, ballState } from './objects.js';
 import { config, state, updateState , winGame} from './state.js'
 import { loseLife } from './state.js';
 import { sounds, playSound } from "./sound.js";
@@ -48,7 +48,7 @@ export function groundCollision(canvas) {
   if (ball.y - ball.radius > canvas.height) {
     // Subtract a life
     loseLife();
-
+    ballState.Launched = false;
     // Reset ball on paddle
     ball.onPaddle = true;
     ball.dx = 0;
@@ -59,6 +59,7 @@ export function groundCollision(canvas) {
 }
 
 export function paddleCollision(){
+  if (!ballState.Launched) return;
   // Bounce off paddle
   if (
     ball.y + ball.radius >= paddle.y &&

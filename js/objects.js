@@ -15,7 +15,7 @@ export const paddle = {
   x: 345,
   y: 550,
   speed: 7,
- 
+
 };
 
 // --- Brick class ---
@@ -64,8 +64,8 @@ const brickImagesSrc = [
   "./assets/images/c.jpg",
   "./assets/images/e.jpg",
   "./assets/images/h.jpg",
-  
- 
+
+
 
 ];
 
@@ -74,7 +74,7 @@ export function createBricks(ctx) {
   const brickHeight = 30;
   const padding = 5;
   const offsetTop = 100;
-  
+
 
   const themes = ["pyramid", "wall", "diamond"];
   const theme = themes[Math.floor(Math.random() * themes.length)];
@@ -100,12 +100,12 @@ export function createBricks(ctx) {
     }
   } else if (theme === "wall") {
     let rows = 5;
-    let cols = Math.floor(ctx.canvas.width  / (brickWidth *1.02 + padding));
+    let cols = Math.floor(ctx.canvas.width / (brickWidth * 1.02 + padding));
     let y = offsetTop;
     for (let r = 0; r < rows; r++) {
       let x = 20;
       if (r % 2 === 1) {
-        x += (brickWidth + padding) / 2; 
+        x += (brickWidth + padding) / 2;
       }
       for (let c = 0; c < cols; c++) {
         const imageSrc = brickImagesSrc[imgIndex % brickImagesSrc.length];
@@ -152,3 +152,6 @@ export function createBricks(ctx) {
 
 export let score = 0;
 export let lives = 3;
+export const ballState = {
+  Launched: false
+};
