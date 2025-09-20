@@ -5,7 +5,7 @@ import { sounds, playSound } from "./sound.js";
 import { powerUps, spawnRandomPowerUp } from "./powerups.js";
 
 
-export function bricksCollision() {
+export function bricksCollision(ctx) {
   let brickHit = false;
 
   bricks.forEach((row) => {
@@ -57,10 +57,9 @@ export function bricksCollision() {
   });
 
   if (brickHit) {
-    // flatten 2D → 1D and check if all destroyed
     const allDestroyed = bricks.flat().every((b) => b.destroyed);
     if (allDestroyed) {
-      setTimeout(() => winGame(), 50);
+      setTimeout(() => winGame(ctx), 50);
     }
   }
 }
@@ -82,11 +81,11 @@ export function wallCollision(canvas){
   }
 }
 
-export function groundCollision(canvas) {
+export function groundCollision(canvas, ctx) {
   // Check if ball falls below canvas
   if (ball.y - ball.radius > canvas.height) {
     // Subtract a life
-    loseLife();
+    loseLife(ctx);
     // Reset ball on paddle
     ball.onPaddle = true;
     ball.dx = 0;

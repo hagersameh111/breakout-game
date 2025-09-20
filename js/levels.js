@@ -25,18 +25,13 @@ export function loadLevelByIndex(index, canvas, ctx) {
   const lvl = LEVELS[currentLevelIndex];
 
   // Generate shape-based layout for current level
-createBricks(ctx, lvl.id);
+  createBricks(ctx, lvl.id);
 
   // Place paddle
   paddle.width = lvl.paddleW;
   paddle.height = 12;
   paddle.x = (canvas.width - paddle.width)/2;
   paddle.y = canvas.height - 30;
-
-
-  // --- Debug ---
-  const actualSpeed = Math.sqrt(ball.dx * ball.dx + ball.dy * ball.dy);
-  console.log(`[LEVEL LOAD] ${lvl.name}, paddleW=${paddle.width}`);
 
   return lvl;
 }

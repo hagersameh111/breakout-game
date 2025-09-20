@@ -82,8 +82,8 @@ export function gameLoop(canvas, ctx, drawCanvas) {
   
   moveBall();
   wallCollision(canvas);
-  groundCollision(canvas);
-  bricksCollision();
+  groundCollision(canvas, ctx);
+  bricksCollision(ctx);
   
   drawCanvas(ctx, canvas, paddle, ball, bricks);
   

@@ -168,11 +168,10 @@ export function createBricks(ctx, levelId) {
     })
   );
 
-  // Replace old global bricks with new 2D array
   bricks.length = 0;
   bricks.push(...generatedBricks);
 
-  return generatedBricks; // now returns 2D array
+  return generatedBricks;
 }
 
 
