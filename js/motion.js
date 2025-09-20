@@ -3,6 +3,7 @@ import { ball, paddle, bricks } from "./objects.js";
 import { keys, mouse } from "./input.js";
 import { loadTopScore } from "./state.js";
 import { wallCollision, groundCollision, paddleCollision, bricksCollision } from "./collision.js";
+import { powerUps, spawnRandomPowerUp, paddleCollisionWithPowerUps } from "./powerups.js";
 
 let ballLaunched = false;
 
@@ -59,35 +60,33 @@ export function launchBall(manual = false) {
   }
 }
 
-export function gameLoop(canvas, ctx, drawCanvas) {
-  if (!gameState.started) return; // Stop until game starts
 
-  // --- Paddle movement ---
+export function gameLoop(canvas, ctx, drawCanvas) {
+  if (!gameState.started) return; // stop until game starts
+
   movePaddle(canvas);
 
-  // --- Ball launch ---
-  // Auto-launch at start (only once)
   if (!ballLaunched) launchBall();     
-
-  // Manual launch if player presses space or clicks
   if (keys.space || mouse.clicked) launchBall(true);
 
-  // --- Move the ball ---
-  moveBall();
+  // Update power-ups (falling)
+  powerUps.forEach((pu, index) => {
+    pu.update();
+    if (pu.y > canvas.height) powerUps.splice(index, 1);
+  });
 
-  // --- Collisions ---
+  // Check collisions with paddle
+  paddleCollision();              // existing ball collision
+  paddleCollisionWithPowerUps();  // power-ups collision
+
+  moveBall();
   wallCollision(canvas);
   groundCollision(canvas);
   bricksCollision();
-  paddleCollision();
-
-  // --- Draw everything ---
+  
   drawCanvas(ctx, canvas, paddle, ball, bricks);
 
-  // Loop
   requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
-
-  // Load top score
   loadTopScore();
 }
 

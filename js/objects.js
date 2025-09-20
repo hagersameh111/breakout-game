@@ -5,7 +5,7 @@ export const ball = {
   dx: 7,
   dy: 7,
   color: "purple",
-  speed: 5,
+  speed: 7,
   onPaddle: true
 };
 
@@ -63,8 +63,6 @@ const brickImagesSrc = [
   "./assets/images/c.jpg",
   "./assets/images/e.jpg",
   "./assets/images/h.jpg",
-  
- 
 
 ];
 export function createBricks(ctx, levelId) {
