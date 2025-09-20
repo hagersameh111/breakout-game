@@ -40,7 +40,7 @@ export function bricksCollision() {
         brickHit = true;
 
         // --- Spawn power-up randomly if less than 2 on screen ---
-        if (Math.random() < 0.1 && powerUps.length < 2) {
+        if (Math.random() < 0.2 && powerUps.length < 2) {
           spawnRandomPowerUp(brick.left + brick.width / 2, brick.top);
         }
         

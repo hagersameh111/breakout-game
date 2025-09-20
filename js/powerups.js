@@ -22,7 +22,7 @@ export class PowerUp {
     this.image = powerUpImages[type];
     // Set width/height proportionally to paddle for better visibility
     if (type === "widePaddle") {
-        this.width = paddle.width * 0.9; // 80% of paddle width
+        this.width = paddle.width * 1.4;
         this.height = paddle.height * 3.5;
     } else {
         // Default size for other power-ups
@@ -57,8 +57,10 @@ export function spawnRandomPowerUp(x, y) {
 export function applyPowerUp(pu) {
   switch(pu.type) {
     case "extraLife":
-      state.lives++;   // adjust if lives is a number or object
-      console.log("Extra Life collected! Lives:", state.lives);
+        if(state.lives<3){
+            state.lives++;   // adjust if lives is a number or object
+            console.log("Extra Life collected! Lives:", state.lives);
+        }
       break;
 
     case "widePaddle":
