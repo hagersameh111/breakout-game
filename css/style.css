@@ -157,3 +157,54 @@ kbd {
   font-family: monospace;
   box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
 }
+.modal {
+  display: none; /* hidden by default */
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* dark overlay */
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.modal-content {
+  background-image: url("../assets//images/bg.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+  color: white;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  width: 400px;
+  max-width: 90%;
+}
+
+.modal-content h1 {
+  margin-bottom: 20px;
+  font-size: 2rem;
+  text-shadow: 2px 2px 4px black;
+}
+
+.modal-content .btn {
+  margin: 10px;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.play-again {
+  background: rgb(204, 189, 55);
+  color: white;
+}
+
+.start-page {
+  background: rgb(204, 189, 55);
+  color: white;
+}

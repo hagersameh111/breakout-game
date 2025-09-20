@@ -64,19 +64,26 @@ function updateState() {
         saveTopScore();
         topScoreEl.textContent = state.topScore;
     }
+}function openModal(message) {
+  document.getElementById("modalMessage").textContent = message;
+  document.getElementById("gameModal").style.display = "flex";
 }
-function loseLife() {
-    state.lives-=1;
-    updateState();
 
-    if(state.lives <= 0) {
-        alert("Game Over");
-        resetState();
-    }
+function closeModal() {
+  document.getElementById("gameModal").style.display = "none";
+}
+
+function loseLife() {
+  state.lives -= 1;
+  updateState();
+
+  if (state.lives <= 0) {
+    openModal(" Game Over 💀 ");
+  }
 }
 
 function winGame() {
-    alert("🎉 You Won!");
-    resetState();
+  openModal("You Won! 🎉 ");
 }
+
 export { config, state, updateState, loadTopScore, saveTopScore, loseLife , winGame}

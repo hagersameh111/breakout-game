@@ -44,7 +44,6 @@ const GAME_HEIGHT = 700;
 function setupCanvasInternalSize() {
   canvas.width = GAME_WIDTH;
   canvas.height = GAME_HEIGHT;
-  // Optional: set a CSS display size so canvas is responsive visually.
   // This keeps the internal resolution fixed but scales the canvas to the screen.
   // Tweak the maxFraction or fixedMaxWidth to match your HUD width if needed.
   const maxFraction = 0.8;              // use up to 80% of viewport width
