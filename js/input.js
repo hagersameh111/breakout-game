@@ -1,4 +1,3 @@
-
 // Keyboard input
 export const keys = {
   left: false,

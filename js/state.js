@@ -1,11 +1,10 @@
 import { createBricks , ball , paddle} from "./objects.js"; 
 import { sounds, playSound } from "./sound.js";
-import { ctx } from "./script.js";
 import { lvlI } from "../main.js";
+import { gameState } from "./gameState.js";
 
 const topScoreEl = document.getElementById('topScore');
 const scoreEl = document.getElementById('score');
-//const livesEl = document.getElementById('lives');
 
 const config = {
     pointsPerBrick: 10,
@@ -41,7 +40,6 @@ export function drawLives(ctx, canvas) {
 
 function saveTopScore() {
     localStorage.setItem(config.localStorageKey, state.topScore);
-
 }
 
 function loadTopScore() {
@@ -65,9 +63,6 @@ function resetState(ctx) {
 
 function updateState() {
     scoreEl.textContent = state.score;
-    //livesEl.textContent = state.lives;
-    // topScoreEl.textContent = localStorage.getItem(config.localStorageKey);
-
 
     if (state.score > state.topScore) {
         state.topScore = state.score;
@@ -75,6 +70,7 @@ function updateState() {
         topScoreEl.textContent = state.topScore;
     }
 }
+
 function openModal(message) {
   document.getElementById("modalMessage").textContent = message;
   document.getElementById("gameModal").style.display = "flex";
@@ -87,18 +83,20 @@ function closeModal() {
 function loseLife(ctx) {
   state.lives -= 1;
   updateState();
-    playSound(sounds.loseLife);
+  playSound(sounds.loseLife);
 
   if (state.lives <= 0) {
     openModal(" Game Over 💀 ");
     playSound(sounds.gameOver);
     resetState(ctx);
+    gameState.started = false;
   }
 }
 
 function winGame(ctx) {
     openModal("You Won! 🎉 ");
     resetState(ctx);
+    gameState.started = false;
 }
 
 export { config, state, updateState, loadTopScore, saveTopScore, loseLife , winGame}

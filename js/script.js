@@ -1,7 +1,7 @@
-import { ball, paddle, bricks, createBricks } from "./objects.js";
+import { ball, paddle, bricks } from "./objects.js";
 import { gameLoop } from "./motion.js";
 import { drawLives } from "./state.js";
-import { powerUps, spawnRandomPowerUp } from "./powerups.js";
+import { powerUps } from "./powerups.js";
 
 
 export const canvas = document.getElementById("myCanvas");
@@ -82,31 +82,6 @@ export function drawPaddle(ctx, paddle) {
 
 
 export function drawBricks(ctx, bricks) {
-  // bricks.forEach((row) => {
-  //   row.forEach((brick) => {
-  //     if (!brick.destroyed) {
-  //       if (brick.image && brick.image.complete) {
-  //         // draw pics on bricks
-  //         ctx.drawImage(brick.image, brick.x, brick.y, brick.width, brick.height);
-
-  //         // shadows
-  //         ctx.shadowColor = "rgba(125, 202, 233, 1)";
-  //         ctx.shadowBlur = 6;
-  //         ctx.shadowOffsetX = 3;
-  //         ctx.shadowOffsetY = 3;
-
-  //         // borders
-  //         ctx.lineWidth = 0.5;
-  //         ctx.strokeStyle = "black";
-  //         ctx.strokeRect(brick.x, brick.y, brick.width, brick.height);
-
-  //       } else {
-  //         // fallback: grey bricks
-  //         ctx.fillStyle = brick.color || "gray";
-  //         ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
-  //       }
-  //     }
-  //   });
   bricks.forEach((row) => {
     row.forEach((brick) => {
     if (brick.breaking && brick.halves.length > 0) {

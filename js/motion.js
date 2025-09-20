@@ -3,8 +3,8 @@ import { ball, paddle, bricks } from "./objects.js";
 import { keys, mouse } from "./input.js";
 import { loadTopScore } from "./state.js";
 import { wallCollision, groundCollision, paddleCollision, bricksCollision } from "./collision.js";
-import { powerUps, spawnRandomPowerUp, paddleCollisionWithPowerUps } from "./powerups.js";
-import { sounds, playSound } from "./sound.js";
+import { powerUps, paddleCollisionWithPowerUps } from "./powerups.js";
+import { sounds } from "./sound.js";
 
 let ballLaunched = false;
 
@@ -16,7 +16,6 @@ export function moveBall(canvas) {
   }
   ball.x += ball.dx;
   ball.y += ball.dy;
-
 }
 
 // Keep ball on paddle before launch
@@ -24,7 +23,6 @@ export function ballOnPaddle() {
   ball.x = paddle.x + paddle.width / 2;
   ball.y = paddle.y - ball.radius;
 }
-
 
 // Paddle movement based on input
 export function movePaddle(canvas) {
@@ -46,7 +44,6 @@ export function movePaddle(canvas) {
   }
 }
 
-
 export function launchBall(manual = false) {
   // Only launch if the ball is on the paddle
   if (ball.onPaddle) {
@@ -60,7 +57,6 @@ export function launchBall(manual = false) {
     if (!manual) ballLaunched = true;
   }
 }
-
 
 export function gameLoop(canvas, ctx, drawCanvas) {
   if (!gameState.started) return; // stop until game starts
@@ -91,4 +87,3 @@ export function gameLoop(canvas, ctx, drawCanvas) {
   loadTopScore();
   sounds.bgMusic.play();
 }
-

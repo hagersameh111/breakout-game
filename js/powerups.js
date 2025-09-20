@@ -1,6 +1,5 @@
 // powerups.js
-import { paddle, lives } from "./objects.js"; // adjust based on your project
-// import { spawnExtraBalls } from "./extraBalls.js"; // optional if you implement multi-ball
+import { paddle } from "./objects.js";
 import { state } from "./state.js";
 export let powerUps = [];
 
@@ -9,7 +8,6 @@ export const powerUpImages = {};
 ["extraLife","widePaddle"].forEach(type => {
   const img = new Image();
   img.src = `./assets/images/${type}.png`;
-//   img.src = `./assets/images/icons8-pixel-heart-48.png`;
   powerUpImages[type] = img;
 });
 
@@ -20,7 +18,6 @@ export class PowerUp {
     this.type = type;
     this.dy = 2;   // falling speed
     this.image = powerUpImages[type];
-    // Set width/height proportionally to paddle for better visibility
     if (type === "widePaddle") {
         this.width = paddle.width * 1.4;
         this.height = paddle.height * 3.5;
@@ -71,11 +68,6 @@ export function applyPowerUp(pu) {
         paddle.width = originalWidth;
       }, 10000); // 10 sec duration
       break;
-
-    // case "multiBall":
-    //   console.log("Multi Ball collected!");
-    //   spawnExtraBalls?.(); // implement extra balls separately
-    //   break;
   }
 }
 
