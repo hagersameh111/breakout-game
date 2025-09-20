@@ -15,8 +15,7 @@ export const mouse = {
 window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") keys.left = true;
   if (e.key === "ArrowRight") keys.right = true;
-  if ((e.key === " " || e.key === "Spacebar") && !ballState.Launched){
-    ballState.Launched = true;
+  if (e.key === " " || e.key === "Spacebar"){
     keys.space = true;
   }
 });
@@ -45,7 +44,7 @@ canvas.addEventListener("mouseleave", () => {
 
 // --- Mouse Click (treat left click as Spacebar) ---
 canvas.addEventListener("mousedown", (e) => {
-  if (e.button === 0 && !ballState.Launched) { // 0 = left button
+  if (e.button === 0 ) { // 0 = left button
     keys.space = true;
   }
 });
