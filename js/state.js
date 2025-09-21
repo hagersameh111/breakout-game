@@ -6,6 +6,7 @@ import { gameState } from "./gameState.js";
 
 const topScoreEl = document.getElementById('topScore');
 const scoreEl = document.getElementById('score');
+//const livesEl = document.getElementById('lives');
 
 const config = {
     pointsPerBrick: 10,
@@ -27,17 +28,20 @@ heartImg.src = "https://img.icons8.com/fluency/24/pixel-heart.png";
 
 // Draw remaining lives as hearts
 export function drawLives(ctx, canvas) {
-    const heartSize = canvas.width * 0.03;   // scale with width (3%)
-    const marginRight = canvas.width * 0.15; // margin from right edge
-    const padding = canvas.width * 0.002;    // scale spacing (0.5%)
-    const topOffset = canvas.height * 0.05;  //  from top
+  const heartSize = canvas.width * 0.03;   // scale with width (3%)
+    const marginRight = canvas.width * 0.1; // margin from right edge
+  const topOffset = canvas.height * 0.04;  // margin from top
+  const padding = canvas.width * 0.002;    // scale spacing (0.3%)
 
-    for (let i = 0; i < state.lives; i++) {
-        const x =
-        canvas.width - marginRight - (i + 1) * heartSize - i * padding; // place each heart to the left of the previous one
-        const y = topOffset;
-        ctx.drawImage(heartImg, x, y, heartSize, heartSize);
-    }
+
+  for (let i = 0; i < state.lives; i++) {
+     const x =
+      canvas.width -
+      marginRight -
+      (i + 1) * heartSize - i * padding; // place each heart to the left of the previous one
+    const y = topOffset;
+    ctx.drawImage(heartImg, x, y, heartSize, heartSize);
+  }
 }
 
 
@@ -109,5 +113,18 @@ function winGame(ctx) {
     resetState(ctx);
     gameState.started = false;
 }
+
+
+export let gamePaused = false;
+
+export function pauseGame() {
+  gamePaused = true;
+}
+
+export function resumeGame() {
+  gamePaused = false;
+}
+
+
 
 export { config, state, updateState, loadTopScore, saveTopScore, loseLife, winGame }
