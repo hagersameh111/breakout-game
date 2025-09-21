@@ -42,8 +42,8 @@ export class Brick {
         sw: this.image.width / 2, sh: this.image.height,
         dx: this.x, dy: this.y,
         dw: halfWidth, dh: this.height,
-        dxSpeed: -4,    // move left
-        dySpeed: 6      // fall down fast
+        dxSpeed: -1.5,    // move left
+        dySpeed: 2      // fall down fast
       },
       {
         // right half
@@ -51,8 +51,8 @@ export class Brick {
         sw: this.image.width / 2, sh: this.image.height,
         dx: this.x + halfWidth, dy: this.y,
         dw: halfWidth, dh: this.height,
-        dxSpeed: 4,     // move right
-        dySpeed: 6
+        dxSpeed: 1.5,     // move right
+        dySpeed: 2
       }
     ];
   }
@@ -91,6 +91,7 @@ const brickImagesSrc = [
   "./assets/images/brick10.jpg",
   "./assets/images/brick11.jpg",
 ];
+
 
 export function createBricks(ctx, levelId) {
   const brickWidth = 60;

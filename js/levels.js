@@ -1,5 +1,5 @@
 // levels.js
-import { ball, paddle, bricks, createBricks, Brick } from "./objects.js";
+import { paddle, bricks, createBricks } from "./objects.js";
 
 export const LEVELS = [
   { id: "L1", name: "Level 1 (Easy)", brickCount: 20, rows: 4, cols: 7,  brickW: 60, brickH: 20, pad: 6, top: 60, paddleW: 105 },

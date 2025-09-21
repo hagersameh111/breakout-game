@@ -1,12 +1,10 @@
 import { createBricks, ball, paddle } from "./objects.js";
 import { sounds, playSound } from "./sound.js";
-import { ctx } from "./script.js";
 import { lvlI } from "../main.js";
 import { gameState } from "./gameState.js";
 
 const topScoreEl = document.getElementById('topScore');
 const scoreEl = document.getElementById('score');
-//const livesEl = document.getElementById('lives');
 
 const config = {
     pointsPerBrick: 10,
@@ -89,8 +87,8 @@ function closeModal() {
 }
 
 function loseLife(ctx) {
-    state.lives -= 1;
-    updateState();
+  state.lives -= 1;
+  updateState();
     playSound(sounds.loseLife);
 
     if (state.lives <= 0) {

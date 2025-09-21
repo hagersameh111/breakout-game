@@ -1,5 +1,5 @@
 // powerups.js
-import { paddle, lives } from "./objects.js";
+import { paddle } from "./objects.js";
 import { state } from "./state.js";
 export let powerUps = [];
 
