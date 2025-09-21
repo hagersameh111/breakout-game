@@ -24,7 +24,8 @@ Keep the ball bouncing and destroy all the bricks to win!
 
 Add a screenshot or gameplay GIF here:
 
-![Game Preview](preview.gif)  
+![Game Screenshot](assets/images/homescreen.png)  
+![Game Screenshot](assets/images/sample1.png)
 
 ---
 
@@ -41,6 +42,15 @@ Add a screenshot or gameplay GIF here:
   Play with either keyboard or mouse.
   
 ---
+
+##  Setup
+
+1. Clone this repository:  
+   ```bash
+   git clone https://github.com/your-username/breakout-game.git
+
+---
+
 ## Project Tree
 
 breakout-game
