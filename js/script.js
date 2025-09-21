@@ -6,8 +6,6 @@ import { powerUps, spawnRandomPowerUp } from "./powerups.js";
 
 export const canvas = document.getElementById("myCanvas");
 export const ctx = canvas.getContext("2d");
-
-
 const GAME_WIDTH = 1100;   // internal drawing resolution (keeps physics stable)
 const GAME_HEIGHT = 700;
 

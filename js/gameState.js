@@ -1,1 +1,4 @@
-export const gameState = { started: false };
+export const gameState = {
+  started: false,
+  paused: false
+};

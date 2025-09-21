@@ -1,7 +1,7 @@
 import { gameState } from "./gameState.js";
 import { ball, paddle, bricks } from "./objects.js";
 import { keys, mouse } from "./input.js";
-import { loadTopScore } from "./state.js";
+import { loadTopScore, gamePaused} from "./state.js";
 import { wallCollision, groundCollision, paddleCollision, bricksCollision } from "./collision.js";
 import { powerUps, spawnRandomPowerUp, paddleCollisionWithPowerUps } from "./powerups.js";
 import { sounds, playSound } from "./sound.js";
@@ -58,8 +58,27 @@ export function launchBall(manual = false) {
   }
 }
 
+
 export function gameLoop(canvas, ctx, drawCanvas) {
-  if (!gameState.started) return; // stop until game starts
+  if (!gameState.started ) { // stop until game starts
+  requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
+  return;
+}
+ if (gamePaused) {
+    // If paused, just redraw the current state without updating  
+    drawCanvas(ctx, canvas);
+
+    ctx.save();
+    ctx.font = `${Math.floor(canvas.width * 0.06)}px Arial`;
+    ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
+    ctx.textAlign = "center";
+    ctx.fillText("⏸ PAUSED", canvas.width / 2, canvas.height / 2);
+    ctx.restore();
+
+    requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
+    return;
+  }
+
   
   movePaddle(canvas);
   
@@ -87,3 +106,4 @@ export function gameLoop(canvas, ctx, drawCanvas) {
   loadTopScore();
   sounds.bgMusic.play();
 }
+
