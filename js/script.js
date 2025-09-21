@@ -3,18 +3,18 @@ import { gameLoop } from "./motion.js";
 import { drawLives } from "./state.js";
 import { powerUps } from "./powerups.js";
 
-
+// Canvas & Rendering Context
 export const canvas = document.getElementById("myCanvas");
 export const ctx = canvas.getContext("2d");
-const GAME_WIDTH = 1100;   // internal drawing resolution (keeps physics stable)
+// Fixed internal resolution for stable physics & drawing
+const GAME_WIDTH = 1100;
 const GAME_HEIGHT = 700;
 
-// Set internal resolution (used for all game math)
+// // Canvas Setup & Scaling)
 function setupCanvasInternalSize() {
   canvas.width = GAME_WIDTH;
   canvas.height = GAME_HEIGHT;
   // This keeps the internal resolution fixed but scales the canvas to the screen.
-  // Tweak the maxFraction or fixedMaxWidth to match your HUD width if needed.
   const maxFraction = 0.8;              // use up to 80% of viewport width
   const fixedMaxWidth = GAME_WIDTH;     // don't upscale beyond internal res
   const cssWidth = Math.min(window.innerWidth * maxFraction, fixedMaxWidth);
@@ -22,7 +22,9 @@ function setupCanvasInternalSize() {
   canvas.style.height = "auto"; // preserve aspect ratio
 }
 
+// Initial setup
 setupCanvasInternalSize();
+// Reapply scaling when window resizes
 window.addEventListener("resize", () => {
   setupCanvasInternalSize();
   // Recompute paddle size/pos if you want paddle to scale with canvas internal size:
@@ -36,7 +38,7 @@ paddle.x = canvas.width * 0.5 - paddle.width / 2;
 paddle.y = canvas.height - paddle.height - 10;
 
 
-// --- Draw Ball ---
+// --- Draw Ball With Glow ---
 export function drawBall(ctx, ball) {
   ctx.beginPath();
   ctx.arc(ball.x, ball.y, ball.radius, 0, Math.PI * 2);
@@ -45,7 +47,7 @@ export function drawBall(ctx, ball) {
   ctx.fill();
   ctx.closePath();
 }
-
+// Draws the paddle with rounded corners, gradient fill, and pulsing glow.
 export function drawPaddle(ctx, paddle) {
   const radius = 7; // curve amount
 
@@ -64,7 +66,7 @@ export function drawPaddle(ctx, paddle) {
   ctx.shadowBlur = glowStrength;
 
 
-  //path drawing
+  //  Draw paddle path
   ctx.beginPath();
   ctx.moveTo(paddle.x + radius, paddle.y);
   ctx.lineTo(paddle.x + paddle.width - radius, paddle.y);
@@ -109,7 +111,7 @@ export function drawPaddle(ctx, paddle) {
   // reset shadow 
   ctx.shadowBlur = 0;
 }
-
+//Draws all bricks, including breaking animations (falling halves).
 export function drawBricks(ctx, bricks) {
   bricks.forEach((row) => {
     row.forEach((brick) => {
@@ -124,7 +126,7 @@ export function drawBricks(ctx, bricks) {
           ctx.shadowBlur = 15;
           ctx.shadowOffsetX = 6;
           ctx.shadowOffsetY = 6;
-
+          // Draw brick half image
           if (brick.image && brick.image.complete) {
             ctx.drawImage(
               brick.image,
@@ -152,7 +154,7 @@ export function drawBricks(ctx, bricks) {
   });
 }
 
-// --- Draw the canvas ---
+//Clears and redraws the entire canvas (ball, paddle, bricks, HUD, power-ups).
 export function drawCanvas(ctx, canvas) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawBall(ctx, ball);
