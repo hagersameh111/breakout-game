@@ -22,8 +22,6 @@ Keep the ball bouncing and destroy all the bricks to win!
 
 ## Preview
 
-Add a screenshot or gameplay GIF here:
-
 ![Game Screenshot](assets/images/homescreen.png)  
 ![Game Screenshot](assets/images/sample1.png)
 
