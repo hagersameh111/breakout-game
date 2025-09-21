@@ -60,13 +60,13 @@ export function drawPaddle(ctx, paddle) {
   gradient.addColorStop(1, "#e7c722");
 
   // Pulsating glow 
-  const time = Date.now() * 0.005;
+  const time = Date.now() * 0.007;
   const pulse = (Math.sin(time) + 1) / 2;
-  const glowStrength = 10 + pulse * 40;
+  const glowStrength = 10 + pulse * 80;
 
   ctx.shadowColor = "#008b8b";
   ctx.shadowBlur = glowStrength;
- 
+
 
   //path drawing
   ctx.beginPath();
@@ -105,6 +105,11 @@ export function drawPaddle(ctx, paddle) {
   ctx.strokeStyle = "rgba(255,255,255,0.9)";
   ctx.stroke();
 
+  ctx.shadowColor = "#00ffff";   // strong cyan glow
+  ctx.shadowBlur = 60;           // very glowy
+  ctx.strokeStyle = "rgba(0, 255, 255, 0.6)";
+  ctx.stroke();
+
   // reset shadow 
   ctx.shadowBlur = 0;
 }
@@ -112,32 +117,43 @@ export function drawPaddle(ctx, paddle) {
 export function drawBricks(ctx, bricks) {
   bricks.forEach((row) => {
     row.forEach((brick) => {
-    if (brick.breaking && brick.halves.length > 0) {
-      brick.halves.forEach((half) => {
-        half.dx += half.dxSpeed;
-        half.dy += half.dySpeed;
-        half.dySpeed += 0.10; // gravity boost
+      if (brick.breaking && brick.halves.length > 0) {
+        brick.halves.forEach((half) => {
+          half.dx += half.dxSpeed;
+          half.dy += half.dySpeed;
+          half.dySpeed += 0.10; // gravity boost
+
+          //shadow for halves
+          ctx.shadowColor = "rgba(0,0,0,0.8)";
+          ctx.shadowBlur = 15;
+          ctx.shadowOffsetX = 6;
+          ctx.shadowOffsetY = 6;
+
+          if (brick.image && brick.image.complete) {
+            ctx.drawImage(
+              brick.image,
+              half.sx, half.sy, half.sw, half.sh,
+              half.dx, half.dy, half.dw, half.dh
+            );
+          }
+        });
+      }
+      else if (!brick.destroyed) {
+        //shadow for bricks
+        ctx.shadowColor = "rgba(0,0,0,0.8)";
+        ctx.shadowBlur = 15;
+        ctx.shadowOffsetX = 6;
+        ctx.shadowOffsetY = 6;
 
         if (brick.image && brick.image.complete) {
-          ctx.drawImage(
-            brick.image,
-            half.sx, half.sy, half.sw, half.sh,
-            half.dx, half.dy, half.dw, half.dh
-          );
+          ctx.drawImage(brick.image, brick.x, brick.y, brick.width, brick.height);
+        } else {
+          ctx.fillStyle = brick.color || "gray";
+          ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
         }
-      });
-    }
-    else if (!brick.destroyed) {
-      // normal brick drawing
-      if (brick.image && brick.image.complete) {
-        ctx.drawImage(brick.image, brick.x, brick.y, brick.width, brick.height);
-      } else {
-        ctx.fillStyle = brick.color || "gray";
-        ctx.fillRect(brick.x, brick.y, brick.width, brick.height);
       }
-    }
+    });
   });
-});
 }
 
 // --- Draw the canvas ---
