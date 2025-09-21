@@ -1,3 +1,5 @@
+// Ball object
+
 export const ball = {
   x: 400,
   y: 300,
@@ -5,10 +7,11 @@ export const ball = {
   dx: 7,
   dy: 7,
   color: "purple",
-  speed: 7,
+  speed: 5,
   onPaddle: true
 };
 
+//paddle object
 export const paddle = {
   width: 110,
   height: 14,
@@ -32,6 +35,8 @@ export class Brick {
     this.imageSrc = imageSrc;
     this.image = null;
   }
+
+    // Split brick into two animated halves
   split() {
     const halfWidth = this.width / 2;
 
@@ -73,7 +78,7 @@ export class Brick {
 
 
 export const bricks = [];
-
+//bricks images 
 const brickImagesSrc = [
   "./assets/images/brick1.jpg",
   "./assets/images/brick2.jpg",
@@ -92,6 +97,7 @@ const brickImagesSrc = [
   "./assets/images/brick11.jpg",
 ];
 
+// Create bricks layout based on level shape
 
 export function createBricks(ctx, levelId) {
   const brickWidth = 60;
@@ -165,6 +171,7 @@ export function createBricks(ctx, levelId) {
       let x = 20;
       if (r % 2 === 1) x += (brickWidth + padding) / 2;
 
+      // Load images for each brick
       generatedBricks[r] = []; // create row
 
       for (let c = 0; c < cols; c++) {

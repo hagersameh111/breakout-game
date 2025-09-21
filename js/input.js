@@ -10,7 +10,7 @@ export const mouse = {
   x: null,
   inside: false
 };
-
+// keyboard movement
 window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") keys.left = true;
   if (e.key === "ArrowRight") keys.right = true;
@@ -28,9 +28,9 @@ window.addEventListener("keyup", (e) => {
   }
 });
 
-// --- Mouse Events (on canvas) ---
 const canvas = document.getElementById("myCanvas");
 
+// --- Mouse Events (on canvas) ---
 canvas.addEventListener("mousemove", (e) => {
   const rect = canvas.getBoundingClientRect();
   mouse.x = e.clientX - rect.left;
