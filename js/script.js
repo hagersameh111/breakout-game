@@ -48,38 +48,66 @@ export function drawBall(ctx, ball) {
   ctx.closePath();
 }
 
-// --- Draw Paddle ---
 export function drawPaddle(ctx, paddle) {
-  // Gradient from top → bottom
+  const radius = 7; // curve amount
+
+  // Gradient from top → bottom 
   const gradient = ctx.createLinearGradient(
     paddle.x, paddle.y,
     paddle.x, paddle.y + paddle.height
   );
-  gradient.addColorStop(0, "#a25d70");  // Top color
+  gradient.addColorStop(0, "#a25d70");
   gradient.addColorStop(1, "#e7c722");
 
-  // 🔥 Pulsating glow (sin wave)
-  const time = Date.now() * 0.005; // speed of pulsing
-  const pulse = (Math.sin(time) + 1) / 2; // 0 → 1
-  const glowStrength = 10 + pulse * 40;   // min 10, max 50
+  // Pulsating glow 
+  const time = Date.now() * 0.005;
+  const pulse = (Math.sin(time) + 1) / 2;
+  const glowStrength = 10 + pulse * 40;
 
-  ctx.shadowColor = "#008b8b"; // neon pink glow
+  ctx.shadowColor = "#008b8b";
   ctx.shadowBlur = glowStrength;
-  ctx.shadowOffsetX = 0;
-  ctx.shadowOffsetY = 0;
+ 
 
+  //path drawing
+  ctx.beginPath();
+  ctx.moveTo(paddle.x + radius, paddle.y);
+  ctx.lineTo(paddle.x + paddle.width - radius, paddle.y);
+
+  ctx.quadraticCurveTo(
+    paddle.x + paddle.width, paddle.y,
+    paddle.x + paddle.width, paddle.y + radius
+  );
+  ctx.lineTo(paddle.x + paddle.width, paddle.y + paddle.height - radius);
+
+  ctx.quadraticCurveTo(
+    paddle.x + paddle.width, paddle.y + paddle.height,
+    paddle.x + paddle.width - radius, paddle.y + paddle.height
+  );
+  ctx.lineTo(paddle.x + radius, paddle.y + paddle.height);
+
+  ctx.quadraticCurveTo(
+    paddle.x, paddle.y + paddle.height,
+    paddle.x, paddle.y + paddle.height - radius
+  );
+  ctx.lineTo(paddle.x, paddle.y + radius);
+
+  ctx.quadraticCurveTo(
+    paddle.x, paddle.y,
+    paddle.x + radius, paddle.y
+  );
+
+  ctx.closePath();
+
+  // fill + outline
   ctx.fillStyle = gradient;
-  ctx.fillRect(paddle.x, paddle.y, paddle.width, paddle.height);
-
-  // White outline for visibility
+  ctx.fill();
   ctx.lineWidth = 4;
   ctx.strokeStyle = "rgba(255,255,255,0.9)";
-  ctx.strokeRect(paddle.x, paddle.y, paddle.width, paddle.height);
+  ctx.stroke();
 
-  // Reset shadow
+  // reset shadow 
   ctx.shadowBlur = 0;
 }
-
 
 export function drawBricks(ctx, bricks) {
   bricks.forEach((row) => {
@@ -88,7 +116,7 @@ export function drawBricks(ctx, bricks) {
       brick.halves.forEach((half) => {
         half.dx += half.dxSpeed;
         half.dy += half.dySpeed;
-        half.dySpeed += 0.4; // gravity boost
+        half.dySpeed += 0.10; // gravity boost
 
         if (brick.image && brick.image.complete) {
           ctx.drawImage(
