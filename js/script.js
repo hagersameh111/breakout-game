@@ -56,8 +56,6 @@ export function drawPaddle(ctx, paddle) {
     paddle.x, paddle.y,
     paddle.x, paddle.y + paddle.height
   );
-  gradient.addColorStop(0, "#a25d70");
-  gradient.addColorStop(1, "#e7c722");
 
   // Pulsating glow 
   const time = Date.now() * 0.007;
