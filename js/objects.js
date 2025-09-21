@@ -75,21 +75,21 @@ export class Brick {
 export const bricks = [];
 
 const brickImagesSrc = [
-  "./assets/images/a.jpg",
-  "./assets/images/bam.jpg",
-  "./assets/images/e.jpg",
-  "./assets/images/f.jpg",
-  "./assets/images/k.jpg",
-  "./assets/images/g.jpg",
-  "./assets/images/j.jpg",
-  "./assets/images/o.jpg",
-  "./assets/images/k.jpg",
-  "./assets/images/e.jpg",
-  "./assets/images/j.jpg",
-  "./assets/images/d.jpg",
-  "./assets/images/c.jpg",
-  "./assets/images/e.jpg",
-  "./assets/images/h.jpg",
+  "./assets/images/brick1.jpg",
+  "./assets/images/brick2.jpg",
+  "./assets/images/brick3.jpg",
+  "./assets/images/brick4.jpg",
+  "./assets/images/brick5.jpg",
+  "./assets/images/brick6.jpg",
+  "./assets/images/brick7.jpg",
+  "./assets/images/brick8.jpg",
+  "./assets/images/brick9.jpg",
+  "./assets/images/brick10.jpg",
+  "./assets/images/brick11.jpg",
+  "./assets/images/brick8.jpg",
+  "./assets/images/brick9.jpg",
+  "./assets/images/brick10.jpg",
+  "./assets/images/brick11.jpg",
 ];
 
 export function createBricks(ctx, levelId) {
