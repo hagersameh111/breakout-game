@@ -3,22 +3,25 @@
 
 /* ---------- Base ---------- */
 body {
-margin: 0;
+  margin: 0;
   display: flex;
   justify-content: center;
-  align-items: center;     
-  height: 100vh;           
+  align-items: center;
+  height: 100vh;
   background-image: url(../assets/images/bg.jpg);
   font-family: "Pixelify Sans", sans-serif;
   color: aliceblue;
   position: relative;
-  overflow: hidden; /* Prevents scrollbars if canvas is large */
+  overflow: hidden;
+  /* Prevents scrollbars if canvas is large */
 }
 
 .game-container {
   position: relative;
-  width: 95vw; /* Use viewport width for sizing */
-  max-width: 1000px; /* Corresponds to your canvas width for 1:1 scaling */
+  width: 95vw;
+  /* Use viewport width for sizing */
+  max-width: 1000px;
+  /* Corresponds to your canvas width for 1:1 scaling */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -37,45 +40,57 @@ canvas {
 }
 
 
+
 /* ---------- HUD ---------- */
 .hud {
   position: absolute;
-  top: 25px;
+  top: 2%;
   left: 0;
-  width: 100%;              /* span full canvas */
+  width: 100%;
+  /* span full canvas */
   display: flex;
-  justify-content: space-between; /* spread across */
+  justify-content: space-between;
+  /* spread across */
   align-items: center;
-  font-size: 26px;
+  font-size: clamp(14px, 2vw, 26px);
   font-weight: bold;
   color: rgb(57, 29, 75);
-  padding: 0 20px;
+  padding: 0 2%;
   box-sizing: border-box;
+  pointer-events: none;
 }
 
 .hud div:first-child {
-  text-align: left;   /* Score left */
+  flex: 1;
+  
+  transform: translateX(12%);
+  padding-top: 2%;
+  padding-left: 2%;
+  text-align: start;
+  /* Score left */
 }
 
 .hud div:last-child {
-  position: absolute; /* Top Score centered */
-  left: 50%;
-  transform: translateX(-50%);
+  flex: 1;
+  padding-top: 2%;
+  transform: translateX(-55%);
   text-align: center;
 }
 
 /* ---------- Overlay ---------- */
 .overlay {
-  position: fixed; /* covers the whole screen */
+  position: fixed;
+  /* covers the whole screen */
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-background: rgba(0, 0, 0, 0.8); 
+  background: rgba(0, 0, 0, 0.8);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10; /* always above game */
+  z-index: 10;
+  /* always above game */
 }
 
 .overlay-content {
@@ -155,16 +170,19 @@ kbd {
   padding: 2px 6px;
   font-size: 14px;
   font-family: monospace;
-  box-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
 }
+
 .modal {
-  display: none; /* hidden by default */
+  display: none;
+  /* hidden by default */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.7); /* dark overlay */
+  background: rgba(0, 0, 0, 0.7);
+  /* dark overlay */
   justify-content: center;
   align-items: center;
   z-index: 999;
@@ -179,7 +197,7 @@ kbd {
   border-radius: 12px;
   text-align: center;
   color: white;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
   width: 400px;
   max-width: 90%;
 }

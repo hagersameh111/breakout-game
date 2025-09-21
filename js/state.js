@@ -27,12 +27,14 @@ heartImg.src = "https://img.icons8.com/fluency/24/pixel-heart.png";
 
 // Draw remaining lives as hearts
 export function drawLives(ctx, canvas) {
-    const heartSize = canvas.width * 0.04;   // scale with width (3%)
-    const padding = canvas.width * 0.005;    // scale spacing (0.5%)
-    const topOffset = canvas.height * 0.04;  //  from top
+    const heartSize = canvas.width * 0.03;   // scale with width (3%)
+    const marginRight = canvas.width * 0.15; // margin from right edge
+    const padding = canvas.width * 0.002;    // scale spacing (0.5%)
+    const topOffset = canvas.height * 0.05;  //  from top
 
     for (let i = 0; i < state.lives; i++) {
-        const x = canvas.width - (i + 1) * (heartSize + padding) - 20;
+        const x =
+        canvas.width - marginRight - (i + 1) * heartSize - i * padding; // place each heart to the left of the previous one
         const y = topOffset;
         ctx.drawImage(heartImg, x, y, heartSize, heartSize);
     }
