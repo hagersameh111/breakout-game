@@ -47,7 +47,7 @@ Add a screenshot or gameplay GIF here:
 
 1. Clone this repository:  
    ```bash
-   git clone https://github.com/your-username/breakout-game.git
+   git clone https://github.com/aserelnaghy/breakout-game.git
 
 ---
 
