@@ -44,6 +44,7 @@ canvas {
 /* ---------- HUD ---------- */
 .hud {
   position: absolute;
+
   top: 2%;
   left: 0;
   width: 100%;
@@ -61,13 +62,17 @@ canvas {
 }
 
 .hud div:first-child {
-  text-align: left;   /* Score left */
+  text-align: start;   /* Score left */
+  flex: 1;
+   transform: translateX(12%);
+   padding-left: 2%;
+   padding-top: 2%;
 }
 
 .hud div:last-child {
-  position: absolute; /* Top Score centered */
-  left: 50%;
-  transform: translateX(-50%);
+  padding-top: 2%;
+flex: 1;
+  transform: translateX(-55%);
   text-align: center;
 }
 
