@@ -72,7 +72,7 @@ export function gameLoop(canvas, ctx, drawCanvas) {
   if (gamePaused) {
     drawCanvas(ctx, canvas);
     ctx.save();
-    ctx.font = $;{Math.floor(canvas.width * 0.06)} Arial;
+    ctx.font = `${Math.floor(canvas.width * 0.06)}px Arial`;
     ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
     ctx.textAlign = "center";
     ctx.fillText("⏸ PAUSED", canvas.width / 2, canvas.height / 2);
