@@ -5,128 +5,123 @@ export const keys = {
   space: false
 };
 
-// Mouse input
+// Mouse / Touch pointer state (used for paddle follow)
 export const mouse = {
   x: null,
   inside: false
 };
-// keyboard movement
+
 window.addEventListener("keydown", (e) => {
   if (e.key === "ArrowLeft") keys.left = true;
   if (e.key === "ArrowRight") keys.right = true;
-  if (e.key === " " || e.key === "Spacebar"){
-    keys.space = true;
-  }
+  if (e.key === " " || e.key === "Spacebar") keys.space = true;
 });
 
 window.addEventListener("keyup", (e) => {
   if (e.key === "ArrowLeft") keys.left = false;
   if (e.key === "ArrowRight") keys.right = false;
-  if (e.key === " " || e.key === "Spacebar"){
-
-    keys.space = false;
-  }
+  if (e.key === " " || e.key === "Spacebar") keys.space = false;
 });
 
 const canvas = document.getElementById("myCanvas");
 
-// --- Mouse Events (on canvas) ---
-canvas.addEventListener("mousemove", (e) => {
+// ---- helper to map clientX to canvas coords, even if CSS-scaled ----
+function canvasXFromClient(clientX) {
   const rect = canvas.getBoundingClientRect();
-  mouse.x = e.clientX - rect.left;
-  mouse.inside = (mouse.x >= 0 && mouse.x <= canvas.width);
-});
-
-canvas.addEventListener("mouseleave", () => {
-  mouse.inside = false;
-});
-
-// --- Mouse Click (treat left click as Spacebar) ---
-canvas.addEventListener("mousedown", (e) => {
-  if (e.button === 0 ) { // 0 = left button
-    keys.space = true;
-  }
-});
-
-canvas.addEventListener("mouseup", (e) => {
-  if (e.button === 0) {
-    
-    keys.space = false;
-  }
-});
-
-// --- Mobile touch: start-on-first-tap + drag paddle smoothly ---
-let paddleTouched = false;
-let touchOffsetX = 0;
-let startedByTouch = false; // ensure first tap starts the game once
-
-function clampPaddleX(x) {
-  if (x < 0) return 0;
-  if (x + paddle.width > canvas.width) return canvas.width - paddle.width;
-  return x;
+  const scaleX = canvas.width / rect.width;
+  return (clientX - rect.left) * scaleX;
 }
 
-function handleTouchStart(e) {
-  if (!e.touches || e.touches.length === 0) return;
-  const rect = canvas.getBoundingClientRect();
-  const t = e.touches[0];
-  const touchX = t.clientX - rect.left;
-  const touchY = t.clientY - rect.top;
+// =========================
+//    POINTER (best path)
+// =========================
+if ("onpointerdown" in window) {
+  // Disable default scrolling/zoom pan over the canvas for touch
+  canvas.style.touchAction = "none";
 
-  // first tap anywhere should start the game (emulate a short Space press)
-  if (!startedByTouch) {
-    startedByTouch = true;
-    keys.space = true;
-    // emulate brief key press so your game sees a "press"
-    setTimeout(() => { keys.space = false; }, 120);
-    // do not return — allow this same touch to begin a drag if it's on the paddle
-  }
+  canvas.addEventListener("pointermove", (e) => {
+    const x = canvasXFromClient(e.clientX);
+    mouse.x = x;
+    mouse.inside = x >= 0 && x <= canvas.width;
+  });
 
-  // if the touch is on the paddle -> begin dragging
-  if (
-    touchX >= paddle.x &&
-    touchX <= paddle.x + paddle.width &&
-    touchY >= paddle.y &&
-    touchY <= paddle.y + paddle.height
-  ) {
-    e.preventDefault(); // prevent page scrolling while dragging
-    paddleTouched = true;
-    touchOffsetX = touchX - paddle.x; // keep relative finger position on paddle
-
-    // Sync mouse state so existing code that reads mouse.x/inside still works
+  canvas.addEventListener("pointerenter", () => {
     mouse.inside = true;
-    mouse.x = touchX;
-    // also set paddle.x immediately to avoid a visual jump
-    paddle.x = clampPaddleX(touchX - touchOffsetX);
-  }
+  });
+
+  canvas.addEventListener("pointerleave", () => {
+    mouse.inside = false;
+  });
+
+  // Treat press as Space (launch)
+  canvas.addEventListener("pointerdown", (e) => {
+    if (e.isPrimary) keys.space = true;
+  });
+
+  canvas.addEventListener("pointerup", (e) => {
+    if (e.isPrimary) keys.space = false;
+  });
+
+  canvas.addEventListener("pointercancel", () => {
+    keys.space = false;
+  });
+
+} else {
+  // =========================
+  //   MOUSE (fallback)
+  // =========================
+  canvas.addEventListener("mousemove", (e) => {
+    const x = canvasXFromClient(e.clientX);
+    mouse.x = x;
+    mouse.inside = x >= 0 && x <= canvas.width;
+  });
+
+  canvas.addEventListener("mouseleave", () => {
+    mouse.inside = false;
+  });
+
+  canvas.addEventListener("mousedown", (e) => {
+    if (e.button === 0) keys.space = true;
+  });
+
+  canvas.addEventListener("mouseup", (e) => {
+    if (e.button === 0) keys.space = false;
+  });
+
+  // =========================
+  //   TOUCH (fallback)
+  // =========================
+  // Use {passive:false} so we can prevent scroll while dragging
+  const touchOpts = { passive: false };
+
+  canvas.addEventListener("touchstart", (e) => {
+    if (e.touches.length > 0) {
+      const x = canvasXFromClient(e.touches[0].clientX);
+      mouse.x = x;
+      mouse.inside = true;
+      keys.space = true; // tap = launch
+    }
+    e.preventDefault();
+  }, touchOpts);
+
+  canvas.addEventListener("touchmove", (e) => {
+    if (e.touches.length > 0) {
+      const x = canvasXFromClient(e.touches[0].clientX);
+      mouse.x = x;
+      mouse.inside = x >= 0 && x <= canvas.width;
+    }
+    e.preventDefault();
+  }, touchOpts);
+
+  canvas.addEventListener("touchend", (e) => {
+    keys.space = false;
+    if (e.touches.length === 0) mouse.inside = false;
+    e.preventDefault();
+  }, touchOpts);
+
+  canvas.addEventListener("touchcancel", (e) => {
+    keys.space = false;
+    mouse.inside = false;
+    e.preventDefault();
+  }, touchOpts);
 }
-
-function handleTouchMove(e) {
-  if (!paddleTouched) return;
-  if (!e.touches || e.touches.length === 0) return;
-  e.preventDefault(); // keep page from scrolling while dragging
-
-  const rect = canvas.getBoundingClientRect();
-  const t = e.touches[0];
-  const touchX = t.clientX - rect.left;
-
-  // compute new paddle x and clamp
-  const newPaddleX = clampPaddleX(touchX - touchOffsetX);
-  paddle.x = newPaddleX;
-
-  // keep mouse in sync (some game loops use mouse.x to move the paddle)
-  mouse.x = newPaddleX + paddle.width / 2;
-  mouse.inside = true;
-}
-
-function handleTouchEnd(e) {
-  paddleTouched = false;
-  mouse.inside = false;
-  // do not change startedByTouch — the game should stay started
-}
-
-// attach listeners (passive: false for touchstart/touchmove so we can preventDefault)
-canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
-canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
-canvas.addEventListener("touchend", handleTouchEnd);
-canvas.addEventListener("touchcancel", handleTouchEnd);

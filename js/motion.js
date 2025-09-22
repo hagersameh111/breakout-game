@@ -57,18 +57,22 @@ export function launchBall(manual = false) {
     if (!manual) ballLaunched = true;
   }
 }
+// module-level guards so we don't repeat expensive work every frame
+let _topScoreLoaded = false;
+let _bgStarted = false;
 
 export function gameLoop(canvas, ctx, drawCanvas) {
-  if (!gameState.started ) { // stop until game starts
-  requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
-  return;
-}
- if (gamePaused) {
-    // If paused, just redraw the current state without updating  
-    drawCanvas(ctx, canvas);
+  // If the game hasn't started yet, keep looping but don't update physics
+  if (!gameState.started) {
+    requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
+    return;
+  }
 
+  // Draw current frame when paused, but skip updates
+  if (gamePaused) {
+    drawCanvas(ctx, canvas);
     ctx.save();
-    ctx.font = `${Math.floor(canvas.width * 0.06)}px Arial`;
+    ctx.font = $;{Math.floor(canvas.width * 0.06)} Arial;
     ctx.fillStyle = "rgba(255, 255, 255, 0.95)";
     ctx.textAlign = "center";
     ctx.fillText("⏸ PAUSED", canvas.width / 2, canvas.height / 2);
@@ -78,30 +82,56 @@ export function gameLoop(canvas, ctx, drawCanvas) {
     return;
   }
 
-  
-  movePaddle(canvas);
-  
-  if (!ballLaunched) launchBall();     
-  if (keys.space || mouse.clicked) launchBall(true);
-  
-  // Update power-ups (falling)
-  powerUps.forEach((pu, index) => {
+  // One-time setup work (do NOT do these every frame)
+  if (!_topScoreLoaded) {
+    _topScoreLoaded = true;
+    try { loadTopScore(); } catch {}
+  }
+  if (sounds?.bgMusic && !_bgStarted && sounds.bgMusic.paused) {
+    // start background music once (mobile NOTE: must be triggered after first user gesture)
+    sounds.bgMusic.play().then(() => { _bgStarted = true; }).catch(() => {});
+  }
+
+  // --- INPUT → PADDLE ---
+  movePaddle(canvas); // make sure this respects mouse.x (from pointer/mouse/touch)
+
+  // --- INPUT → LAUNCH (consume once) ---
+  // Allow auto-launch if your logic requires it
+  if (!ballLaunched && typeof launchBall === "function") {
+    const launchRequested = keys.space === true || mouse.clicked === true;
+
+    // If you also want auto-launch when not requested:
+    // if (!ballLaunched && !launchRequested) launchBall(); // optional
+
+    if (launchRequested) {
+      launchBall(true);      // explicit launch
+      // consume inputs so it doesn't relaunch every frame
+      keys.space = false;
+      mouse.clicked = false;
+    }
+  }
+
+  // --- POWER-UPS (falling) ---
+  // iterate backwards if you may splice
+  for (let i = powerUps.length - 1; i >= 0; i--) {
+    const pu = powerUps[i];
     pu.update();
-    if (pu.y > canvas.height) powerUps.splice(index, 1);
-  });
-  
-  // Check collisions with paddle
-  paddleCollision();              // existing ball collision
-  paddleCollisionWithPowerUps();  // power-ups collision
-  
+    if (pu.y > canvas.height) powerUps.splice(i, 1);
+  }
+
+  // --- COLLISIONS ---
+  paddleCollision();             // ball vs paddle
+  paddleCollisionWithPowerUps(); // paddle vs power-ups
+
+  // --- PHYSICS & WORLD ---
   moveBall();
   wallCollision(canvas);
   groundCollision(canvas, ctx);
   bricksCollision(ctx);
-  
+
+  // --- RENDER ---
   drawCanvas(ctx, canvas, paddle, ball, bricks);
 
+  // --- NEXT FRAME ---
   requestAnimationFrame(() => gameLoop(canvas, ctx, drawCanvas));
-  loadTopScore();
-  sounds.bgMusic.play();
 }
