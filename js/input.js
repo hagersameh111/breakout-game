@@ -54,3 +54,43 @@ canvas.addEventListener("mouseup", (e) => {
     keys.space = false;
   }
 });
+
+// --- Touch Support for Mobile ---
+let touchStartX = null;
+
+canvas.addEventListener("touchstart", (e) => {
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  touchStartX = touch.clientX - rect.left;
+
+  // Treat tap as "space" (like mouse click / launch ball)
+  keys.space = true;
+});
+
+canvas.addEventListener("touchend", () => {
+  touchStartX = null;
+  keys.space = false;
+});
+
+canvas.addEventListener("touchmove", (e) => {
+  e.preventDefault(); // prevent page scrolling
+  const touch = e.touches[0];
+  const rect = canvas.getBoundingClientRect();
+  const currentX = touch.clientX - rect.left;
+
+  // Directly move paddle (like mouse.x)
+  mouse.x = currentX;
+  mouse.inside = (mouse.x >= 0 && mouse.x <= canvas.width);
+
+  // Or detect swipe direction:
+  if (touchStartX !== null) {
+    const diffX = currentX - touchStartX;
+    if (diffX > 30) {
+      keys.right = true;
+      keys.left = false;
+    } else if (diffX < -30) {
+      keys.left = true;
+      keys.right = false;
+    }
+  }
+}, { passive: false });
