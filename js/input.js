@@ -55,10 +55,8 @@ canvas.addEventListener("mouseup", (e) => {
   }
 });
 
-// --- Touch Support for Mobile ---
+/// --- Touch Support for Mobile ---
 let paddleTouched = false;
-let touchOffsetX = 0;
-
 canvas.addEventListener("touchstart", (e) => {
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches[0];
@@ -76,29 +74,24 @@ canvas.addEventListener("touchstart", (e) => {
     touchY <= paddle.y + paddle.height
   ) {
     paddleTouched = true;
-    touchOffsetX = touchX - paddle.x; // remember where finger touched
+    mouse.inside = true; // mimic mouse inside
   }
 });
 
 canvas.addEventListener("touchmove", (e) => {
   if (!paddleTouched) return;
-  e.preventDefault(); // stop screen scrolling on swipe
+  e.preventDefault(); // stop scrolling
 
   const rect = canvas.getBoundingClientRect();
   const touch = e.touches[0];
   const touchX = touch.clientX - rect.left;
 
-  // Move paddle with finger
-  paddle.x = touchX - touchOffsetX;
-
-  // Keep paddle inside canvas
-  if (paddle.x < 0) paddle.x = 0;
-  if (paddle.x + paddle.width > canvas.width) {
-    paddle.x = canvas.width - paddle.width;
-  }
+  // Update like mouse movement
+  mouse.x = touchX;
 });
 
 canvas.addEventListener("touchend", () => {
   paddleTouched = false;
-  keys.space = false; // reset tap
+  keys.space = false;
+  mouse.inside = false;
 });
