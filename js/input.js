@@ -55,43 +55,78 @@ canvas.addEventListener("mouseup", (e) => {
   }
 });
 
-/// --- Touch Support for Mobile ---
+// --- Mobile touch: start-on-first-tap + drag paddle smoothly ---
 let paddleTouched = false;
-canvas.addEventListener("touchstart", (e) => {
+let touchOffsetX = 0;
+let startedByTouch = false; // ensure first tap starts the game once
+
+function clampPaddleX(x) {
+  if (x < 0) return 0;
+  if (x + paddle.width > canvas.width) return canvas.width - paddle.width;
+  return x;
+}
+
+function handleTouchStart(e) {
+  if (!e.touches || e.touches.length === 0) return;
   const rect = canvas.getBoundingClientRect();
-  const touch = e.touches[0];
-  const touchX = touch.clientX - rect.left;
-  const touchY = touch.clientY - rect.top;
+  const t = e.touches[0];
+  const touchX = t.clientX - rect.left;
+  const touchY = t.clientY - rect.top;
 
-  // Start game on first tap (like Space)
-  keys.space = true;
+  // first tap anywhere should start the game (emulate a short Space press)
+  if (!startedByTouch) {
+    startedByTouch = true;
+    keys.space = true;
+    // emulate brief key press so your game sees a "press"
+    setTimeout(() => { keys.space = false; }, 120);
+    // do not return — allow this same touch to begin a drag if it's on the paddle
+  }
 
-  // Check if paddle is touched
+  // if the touch is on the paddle -> begin dragging
   if (
     touchX >= paddle.x &&
     touchX <= paddle.x + paddle.width &&
     touchY >= paddle.y &&
     touchY <= paddle.y + paddle.height
   ) {
+    e.preventDefault(); // prevent page scrolling while dragging
     paddleTouched = true;
-    mouse.inside = true; // mimic mouse inside
-  }
-});
+    touchOffsetX = touchX - paddle.x; // keep relative finger position on paddle
 
-canvas.addEventListener("touchmove", (e) => {
+    // Sync mouse state so existing code that reads mouse.x/inside still works
+    mouse.inside = true;
+    mouse.x = touchX;
+    // also set paddle.x immediately to avoid a visual jump
+    paddle.x = clampPaddleX(touchX - touchOffsetX);
+  }
+}
+
+function handleTouchMove(e) {
   if (!paddleTouched) return;
-  e.preventDefault(); // stop scrolling
+  if (!e.touches || e.touches.length === 0) return;
+  e.preventDefault(); // keep page from scrolling while dragging
 
   const rect = canvas.getBoundingClientRect();
-  const touch = e.touches[0];
-  const touchX = touch.clientX - rect.left;
+  const t = e.touches[0];
+  const touchX = t.clientX - rect.left;
 
-  // Update like mouse movement
-  mouse.x = touchX;
-});
+  // compute new paddle x and clamp
+  const newPaddleX = clampPaddleX(touchX - touchOffsetX);
+  paddle.x = newPaddleX;
 
-canvas.addEventListener("touchend", () => {
+  // keep mouse in sync (some game loops use mouse.x to move the paddle)
+  mouse.x = newPaddleX + paddle.width / 2;
+  mouse.inside = true;
+}
+
+function handleTouchEnd(e) {
   paddleTouched = false;
-  keys.space = false;
   mouse.inside = false;
-});
+  // do not change startedByTouch — the game should stay started
+}
+
+// attach listeners (passive: false for touchstart/touchmove so we can preventDefault)
+canvas.addEventListener("touchstart", handleTouchStart, { passive: false });
+canvas.addEventListener("touchmove", handleTouchMove, { passive: false });
+canvas.addEventListener("touchend", handleTouchEnd);
+canvas.addEventListener("touchcancel", handleTouchEnd);
