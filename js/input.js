@@ -56,41 +56,49 @@ canvas.addEventListener("mouseup", (e) => {
 });
 
 // --- Touch Support for Mobile ---
-let touchStartX = null;
+let paddleTouched = false;
+let touchOffsetX = 0;
 
 canvas.addEventListener("touchstart", (e) => {
-  const touch = e.touches[0];
   const rect = canvas.getBoundingClientRect();
-  touchStartX = touch.clientX - rect.left;
+  const touch = e.touches[0];
+  const touchX = touch.clientX - rect.left;
+  const touchY = touch.clientY - rect.top;
 
-  // Treat tap as "space" (like mouse click / launch ball)
+  // Start game on first tap (like Space)
   keys.space = true;
-});
 
-canvas.addEventListener("touchend", () => {
-  touchStartX = null;
-  keys.space = false;
+  // Check if paddle is touched
+  if (
+    touchX >= paddle.x &&
+    touchX <= paddle.x + paddle.width &&
+    touchY >= paddle.y &&
+    touchY <= paddle.y + paddle.height
+  ) {
+    paddleTouched = true;
+    touchOffsetX = touchX - paddle.x; // remember where finger touched
+  }
 });
 
 canvas.addEventListener("touchmove", (e) => {
-  e.preventDefault(); // prevent page scrolling
-  const touch = e.touches[0];
+  if (!paddleTouched) return;
+  e.preventDefault(); // stop screen scrolling on swipe
+
   const rect = canvas.getBoundingClientRect();
-  const currentX = touch.clientX - rect.left;
+  const touch = e.touches[0];
+  const touchX = touch.clientX - rect.left;
 
-  // Directly move paddle (like mouse.x)
-  mouse.x = currentX;
-  mouse.inside = (mouse.x >= 0 && mouse.x <= canvas.width);
+  // Move paddle with finger
+  paddle.x = touchX - touchOffsetX;
 
-  // Or detect swipe direction:
-  if (touchStartX !== null) {
-    const diffX = currentX - touchStartX;
-    if (diffX > 30) {
-      keys.right = true;
-      keys.left = false;
-    } else if (diffX < -30) {
-      keys.left = true;
-      keys.right = false;
-    }
+  // Keep paddle inside canvas
+  if (paddle.x < 0) paddle.x = 0;
+  if (paddle.x + paddle.width > canvas.width) {
+    paddle.x = canvas.width - paddle.width;
   }
-}, { passive: false });
+});
+
+canvas.addEventListener("touchend", () => {
+  paddleTouched = false;
+  keys.space = false; // reset tap
+});
